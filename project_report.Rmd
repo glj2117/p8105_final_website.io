@@ -7,8 +7,33 @@ output:
     theme : cosmo
 ---
 
-# Motivation
+## Motivation
 
 Our group was motivated by the widely available public data sets surrounding fast food chains we discovered by chance. In particular, we wanted to look at New York City-specific data, as that is where we live and study. The overarching goal of this project was to analyze these data for any geographic trends (i.e. clusters of fast food restaurants in specific neighborhoods) in relation to potential health outcomes within the community. The growing number of fast-food chains in the United States has pushed the US into an era of food "convenience." Since the industry’s inception in 1927, there are approximately 150 thousand convenience stores across the US as of 2020.1–3 Their presence is ubiquitous; however, little is known about the general distribution of fast-food chains in the US. In cities like New York there seems to be a new chain on every corner of the city. They provide quick and cheap food options, alongside fast food chains, which could be the only option for many communities. Convenience stores and others alike are known to sell food products high in fats, sugars, and salts.7 The presence of convenience stores has been associated with higher BMI, higher obesity, and increased hypertension.8,9 Residents of color living in rural, low-income neighborhoods have inadequate access to supermarkets, chain grocery stores, and diversity in food products.10 
 
 Thus, we were motivated by these findings to investigate trends in NYC. We have data spanning from 2008-2020, and analyzed various trends in the nutritional content of the food available at 59 fast-food chains/convenience stores across New York City. 
+
+## Related Work
+
+## Initial Questions
+
+Our team sought to investigate spatial distribution of fast-food chains and convenience stores within the five boroughs of New York City. Additionally, we wanted to link the geographic distribution of these chains to demographic composition of the neighborhoods in which they are located. Lastly, we wanted to analyze the nutritional content (using the metrics of % trans fat, total fat, etc…) of the food available at these chains between the years of 2008-2020. 
+
+## Data
+
+The data used for this project came from various publicly available sources. 
+[NYC DOHMH MenuStat nutritional database](https://www.menustat.org/data.html) 
+Menustat provides restaurant nutritional data for specific foods and beverages served at national chains. Some of these national chains do not have a presence in NYC, so filtering those out was one of the first steps in our data cleaning process. 
+
+[NYC DOHMH Restaurant Inspections database](https://data.cityofnewyork.us/Health/Restaurants-rolled-up-/59dk-tdhz/data)
+	NYC Open Data provides data on annual restaurant inspections throughout New York City. This dataset allowed us to determine which of the restaurants in the MenuStat dataset exist in NYC. Only restaurants that were found in both datasets (59 total) were included in our analyses for this project. This dataset also provides restaurant location within NYC by zipcode. 
+
+[NY U.S. census mean income data](https://data.census.gov/cedsci/table?q=population%20demographics%20income&g=0400000US36%248600000&tid=ACSST5Y2020.S1902) 
+[NY U.S. census demographic and housing estimate data](https://data.census.gov/cedsci/table?q=population%20demographics%20&g=0400000US36%248600000&tid=ACSDP5Y2020.DP05)
+
+## Exploratory Analysis
+
+## Additional Analysis
+Regression models
+
+## Discussion
