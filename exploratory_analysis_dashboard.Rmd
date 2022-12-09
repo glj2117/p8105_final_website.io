@@ -17,7 +17,8 @@ rest_locations = read_csv("data/restaurant_location.csv")
 final_cal_df = 
   menustat_df %>% 
   group_by(rest_type) %>% 
-  filter(quantile(calories, 0.95) > calories)
+  filter(quantile(calories, 0.95) > calories) %>% 
+  filter(restaurant == "McDonald's" | restaurant == "Popeyes" | restaurant == "KFC" | restaurant == "Boston Market" | restaurant == "Chipotle" | restaurant == "White Castle" | restaurant == "Tim Hortons" | restaurant == "Little Caesers" | restaurant == "Wingstop" | restaurant == "Taco Bell" | restaurant == "Subway" | restaurant == "Wendy's" | restaurant == "Shake Shack" | restaurant == "Papa John's" | restaurant == "IHOP" | restaurant == "Pizza Hut" | restaurant == "Applebee's" | restaurant == "Panda Express" | restaurant == "Checkers" | restaurant == "Arby's" | restaurant == "Burger King" | restaurant == "Starbucks" | restaurant == "Panera Bread" | restaurant == "Tropical Smoothie Café" | restaurant == "Kriskpy Kreme" | restaurant == "Five Guys" | restaurant == "Buffalo Wild Wings" | restaurant == "Dominos" | restaurant == "Outback Steakhouse" | restaurant == "Moe's Southwest Grill" | restaurant == "Auntie Anne's" | restaurant == "Chick-FIL-A" | restaurant == "Sbarro" | restaurant == "Dunkin’ Donuts" | restaurant == "Hardee" | restaurant == "HOOTERS" | restaurant == "TGI FRIDAY'S"| restaurant == "JAMBA JUICE" | restaurant == "MARCO'S" | restaurant == "Red Lobster" | restaurant == "The Capital Grille" | restaurant == "Dave & Buster's" | restaurant == "Chuck E. Cheese's" | restaurant == "Perkins" | restaurant == "Jimmy Johns" | restaurant == "Baskin Robbins" | restaurant == "PF Chang's" | restaurant == "Dickey's Barbeque Pit" | restaurant == "The Cheesecake Factor" | restaurant == "California Pizza Kitchen" | restaurant == "Dairy Queen" | restaurant == "Qdoba" | restaurant == "Sonic"| restaurant == "Longhorn Steakhouse")
 
 distinct_food_categ =
   final_cal_df %>% 
@@ -50,9 +51,6 @@ menustat_df %>%
   group_by(rest_type) %>% 
   plot_ly(x = ~rest_type, y = ~calories, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
-
-Column {data-width=350}
------------------------------------------------------------------------
 
 ### Items With Calorie Counts in Top 5% of Restaurants 
 
@@ -124,7 +122,7 @@ Column {data-width=650}
 -----------------------------------------------------------------------
 
 
-### Fat Distribution in 2008
+### Trans Fat Distribution in 2008
 
 ```{r}
 final_cal_df %>% 
@@ -133,7 +131,7 @@ final_cal_df %>%
   plot_ly(x = ~rest_type, y = ~trans_fat, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution in 2012
+### Trans Fat Distribution in 2012
 
 ```{r}
 final_cal_df %>% 
@@ -142,7 +140,7 @@ final_cal_df %>%
   plot_ly(x = ~rest_type, y = ~trans_fat, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution in 2016
+### Trans Fat Distribution in 2016
 
 ```{r}
 final_cal_df %>% 
@@ -151,7 +149,7 @@ final_cal_df %>%
   plot_ly(x = ~rest_type, y = ~trans_fat, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution in 2020
+### Trans Fat Distribution in 2020
 
 ```{r}
 final_cal_df %>% 
@@ -251,15 +249,15 @@ final_cal_df %>%
   plot_ly(x = ~food_category, y = ~calories, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution by Food Category Overlayed
+### Trans Fat Distribution by Food Category Overlayed
 
 ```{r}
 final_cal_df %>% 
   drop_na(rest_type) %>% 
-  plot_ly(x = ~food_category, y = ~calories, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
+  plot_ly(x = ~food_category, y = ~trans_fat, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution in Beverages and Desserts Restaurants
+### Trans Fat Distribution in Beverages and Desserts Restaurants
 
 ```{r}
 final_cal_df %>% 
@@ -267,7 +265,7 @@ final_cal_df %>%
   plot_ly(x = ~food_category, y = ~trans_fat, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution in Convenience Stores
+### Trans Fat Distribution in Convenience Stores
 
 ```{r}
 final_cal_df %>% 
@@ -275,7 +273,7 @@ final_cal_df %>%
   plot_ly(x = ~food_category, y = ~trans_fat, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution in Fast Food Restaurants
+### Trans Fat Distribution in Fast Food Restaurants
 
 ```{r}
 final_cal_df %>% 
@@ -283,7 +281,7 @@ final_cal_df %>%
   plot_ly(x = ~food_category, y = ~trans_fat, color = ~rest_type, text = ~item_name, type = "box", colors = "viridis")
 ```
 
-### Fat Distribution in Sit-down Restaurants
+### Trans Fat Distribution in Sit-down Restaurants
 
 ```{r}
 final_cal_df %>% 
