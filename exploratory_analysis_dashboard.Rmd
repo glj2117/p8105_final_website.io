@@ -17,8 +17,8 @@ rest_locations = read_csv("data/restaurant_location.csv")
 final_cal_df = 
   menustat_df %>% 
   group_by(rest_type) %>% 
-  filter(quantile(calories, 0.95) > calories) %>% 
-  filter(restaurant == "McDonald's" | restaurant == "Popeyes" | restaurant == "KFC" | restaurant == "Boston Market" | restaurant == "Chipotle" | restaurant == "White Castle" | restaurant == "Tim Hortons" | restaurant == "Little Caesers" | restaurant == "Wingstop" | restaurant == "Taco Bell" | restaurant == "Subway" | restaurant == "Wendy's" | restaurant == "Shake Shack" | restaurant == "Papa John's" | restaurant == "IHOP" | restaurant == "Pizza Hut" | restaurant == "Applebee's" | restaurant == "Panda Express" | restaurant == "Checkers" | restaurant == "Arby's" | restaurant == "Burger King" | restaurant == "Starbucks" | restaurant == "Panera Bread" | restaurant == "Tropical Smoothie Café" | restaurant == "Kriskpy Kreme" | restaurant == "Five Guys" | restaurant == "Buffalo Wild Wings" | restaurant == "Dominos" | restaurant == "Outback Steakhouse" | restaurant == "Moe's Southwest Grill" | restaurant == "Auntie Anne's" | restaurant == "Chick-FIL-A" | restaurant == "Sbarro" | restaurant == "Dunkin’ Donuts" | restaurant == "Hardee" | restaurant == "HOOTERS" | restaurant == "TGI FRIDAY'S"| restaurant == "JAMBA JUICE" | restaurant == "MARCO'S" | restaurant == "Red Lobster" | restaurant == "The Capital Grille" | restaurant == "Dave & Buster's" | restaurant == "Chuck E. Cheese's" | restaurant == "Perkins" | restaurant == "Jimmy Johns" | restaurant == "Baskin Robbins" | restaurant == "PF Chang's" | restaurant == "Dickey's Barbeque Pit" | restaurant == "The Cheesecake Factor" | restaurant == "California Pizza Kitchen" | restaurant == "Dairy Queen" | restaurant == "Qdoba" | restaurant == "Sonic"| restaurant == "Longhorn Steakhouse")
+  filter(restaurant == "McDonald's" | restaurant == "Popeyes" | restaurant == "KFC" | restaurant == "Boston Market" | restaurant == "Chipotle" | restaurant == "White Castle" | restaurant == "Tim Hortons" | restaurant == "Little Caesers" | restaurant == "Wingstop" | restaurant == "Taco Bell" | restaurant == "Subway" | restaurant == "Wendy's" | restaurant == "Shake Shack" | restaurant == "Papa John's" | restaurant == "IHOP" | restaurant == "Pizza Hut" | restaurant == "Applebee's" | restaurant == "Panda Express" | restaurant == "Checkers" | restaurant == "Arby's" | restaurant == "Burger King" | restaurant == "Starbucks" | restaurant == "Panera Bread" | restaurant == "Tropical Smoothie Café" | restaurant == "Kriskpy Kreme" | restaurant == "Five Guys" | restaurant == "Buffalo Wild Wings" | restaurant == "Dominos" | restaurant == "Outback Steakhouse" | restaurant == "Moe's Southwest Grill" | restaurant == "Auntie Anne's" | restaurant == "Chick-Fil-A" | restaurant == "Sbarro" | restaurant == "Dunkin’ Donuts" | restaurant == "Hardee" | restaurant == "HOOTERS" | restaurant == "TGI FRIDAY'S"| restaurant == "JAMBA JUICE" | restaurant == "MARCO'S" | restaurant == "Red Lobster" | restaurant == "The Capital Grille" | restaurant == "Dave & Buster's" | restaurant == "Chuck E. Cheese's" | restaurant == "Perkins" | restaurant == "Jimmy Johns" | restaurant == "Baskin Robbins" | restaurant == "PF Chang's" | restaurant == "Dickey's Barbeque Pit" | restaurant == "The Cheesecake Factor" | restaurant == "California Pizza Kitchen" | restaurant == "Dairy Queen" | restaurant == "Qdoba" | restaurant == "Sonic"| restaurant == "Longhorn Steakhouse") %>%
+  filter(quantile(calories, 0.95) > calories) 
 
 distinct_food_categ =
   final_cal_df %>% 
@@ -40,9 +40,6 @@ Sidebar {.sidebar}
 
 Initial Visualizations
 ======================================================================
-
-Column {data-width=650}
------------------------------------------------------------------------
 
 ### Distribution of Total Calories By Restaurant Type
 
