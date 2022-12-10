@@ -7,7 +7,7 @@ output:
     theme : cosmo
 ---
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidyverse)
 library(p8105.datasets)

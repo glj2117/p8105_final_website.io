@@ -9,7 +9,7 @@ output:
 
 ### Data Cleaning and Pre-Processing
 ---
-```{r load and tidy data, echo = FALSE}
+```{r load and tidy data, echo = FALSE, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidyverse)
 library(p8105.datasets)
@@ -183,7 +183,7 @@ nyc_acs_data_prop = nyc_acs_data %>%
 
 **ACS individual year pull, no function**
 ### DO NOT NEED THIS CODE CHUNK ###
-```{r ACS for one year pull}
+```{r ACS for one year pull, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidycensus)
 library(sf)
