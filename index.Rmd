@@ -22,5 +22,7 @@ output:
 ![](images/NYC_Downtown_Manhattan_Skyline_seen_from_Paulus_Hook_2019-12-20_IMG_7347_FRD_(cropped).jpg)
 
 ## Screencast
+{% include youtube.html id="e6ylMwhOCwU" %} 
 
+## GitHub Repo Link
 [GitHub Repo](https://github.com/glj2117/p8105_final_website.io)

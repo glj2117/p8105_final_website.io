@@ -495,36 +495,20 @@ div.tocify {
 </div>
 <div id="census-data" class="section level2">
 <h2>Census Data</h2>
-<pre class="r"><code># Set API key, only need to do this once but &#39;overwrite&#39; will allow multiple
-census_api_key(&quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;, overwrite = TRUE, install = TRUE)</code></pre>
+<pre class="r"><code>census_api_key(&quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;, overwrite = TRUE, install = TRUE)</code></pre>
 <pre><code>## [1] &quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;</code></pre>
-<pre class="r"><code># run to use 
-readRenviron(&quot;~/.Renviron&quot;)
-#calls API key 
+<pre class="r"><code>readRenviron(&quot;~/.Renviron&quot;)
+
 Sys.getenv(&quot;CENSUS_API_KEY&quot;)</code></pre>
 <pre><code>## [1] &quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;</code></pre>
-<pre class="r"><code># Call ist of all variables for ACS
-vars_list = load_variables( 
+<pre class="r"><code>vars_list = load_variables( 
                           year = 2016, 
                            dataset = &quot;acs5&quot;, 
                            cache = TRUE) %&gt;% 
 
             view()
 
-# B19013_001 median household income
-# B01003_001 total population
-# B02001_001 total population (for race)
-# B02001_002 white alone
-# B02001_003 black alone
-# B02001_004 american indian/alaskan native 
-# B02001_005 asian alone
-# B02001_006 native hawaiian and other pacific islander 
-# B02001_007 Some other race alone
-# B01001_026 female sex 
-# B01001_002 male sex 
-# PWGTP weight variable 
-
-# Get data 2015-2019 for NYC by ACS &amp; output in wide format 
+ 
 nyc_acs_data &lt;- get_acs(state = &quot;ny&quot;,
                geography = &quot;zcta&quot;,
                year = 2019,
@@ -548,7 +532,7 @@ nyc_acs_data &lt;- get_acs(state = &quot;ny&quot;,
       values_from = &quot;estimate&quot;
     )
 
-#data manipulation to make proportions &amp; data export 
+
 nyc_acs_data_prop = nyc_acs_data %&gt;% 
   mutate(prop_bipoc = (black_aa + ai_an + asain + hawaiian_pi)/total_pop, 
          prop_white = white/total_pop, 
@@ -559,13 +543,11 @@ nyc_acs_data_prop = nyc_acs_data %&gt;%
   select(-c(black_aa, ai_an, asain, hawaiian_pi, total_pop, race_total, white, other, female, male, NAME)) %&gt;% 
   rename(zipcode = GEOID) %&gt;% 
   write_csv(&quot;data/nyc_acs_reg&quot;)</code></pre>
-<p><strong>ACS individual year pull, no function</strong> ### DO NOT
-NEED THIS CODE CHUNK ###</p>
 <pre class="r"><code>library(tidyverse)
 library(tidycensus)
 library(sf)
 library(scales)
-#2016
+
 acs_ny_2016 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -585,7 +567,7 @@ acs_ny_2016 &lt;- get_acs( state = &quot;ny&quot;,
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
   tibble::add_column(year = 2016)
   
-#2017
+
 acs_ny_2017 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -604,7 +586,7 @@ acs_ny_2017 &lt;- get_acs( state = &quot;ny&quot;,
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
   tibble::add_column(year = 2017)
 
-#2018
+
 acs_ny_2018 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -624,7 +606,7 @@ acs_ny_2018 &lt;- get_acs( state = &quot;ny&quot;,
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
   tibble::add_column(year = 2018)
 
-#2019
+
 acs_ny_2019 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -644,7 +626,7 @@ acs_ny_2019 &lt;- get_acs( state = &quot;ny&quot;,
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
   tibble::add_column(year = 2019)
 
-#2020
+
 acs_ny_2020 &lt;- get_acs(
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -662,17 +644,7 @@ acs_ny_2020 &lt;- get_acs(
   survey = &quot;acs5&quot;, 
   year = 2020) %&gt;% 
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
-  tibble::add_column(year = 2020)
-
-#acs_ny_comb &lt;- bind_rows(acs_ny_2016, acs_ny_2017, acs_ny_2018, acs_ny_2019, acs_ny_2020) %&gt;% #there are 254 zctas with estimate NA&#39;s
-  #janitor::clean_names() %&gt;%
-  #write_csv(&quot;data/acs_ny_combined.csv&quot;)
-
-# drop_na(estimate) #if we want to drop the 254 NA&#39;s but check what the mapping looks like
-
-#acs_ny_comb %&gt;%
-#  summarise(across(everything(), ~sum(is.na(.x)))) %&gt;%
-#  knitr::kable()</code></pre>
+  tibble::add_column(year = 2020)</code></pre>
 </div>
 
 
