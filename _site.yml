@@ -14,7 +14,7 @@ navbar:
     - text: "Statistical Analysis"
       href: statistical_analysis.html
     - icon: fa-github fa-lg
-      href: http://github.com/kpatpatt/p8105_final
+      href: https://github.com/glj2117/p8105_final_website.io
     
 output:
   html_document:

@@ -15,6 +15,8 @@ rest_locations = read_csv("data/restaurant_location.csv")
 
 
 ```{r frequency}
+library(tidyverse)
+library(tidycensus)
 rest_locations %>%
   select(restaurant, rest_type) %>%
   arrange(rest_type) %>%
@@ -62,7 +64,7 @@ sd_cal = menustat_df %>%
   select(rest_type, calories) %>%
   filter(rest_type == "sit-down") %>%
   ggplot(aes(x = calories)) +
-  geom_histogram(fill = "red", color = "black")+ 
+  geom_histogram(fill = "red", color = "black") + 
 labs(
     x = "Calories per Item",
     y = "Frequency",
@@ -86,7 +88,7 @@ conv_cal = menustat_df %>%
   select(rest_type, calories) %>%
   filter(rest_type == "convenience") %>%
   ggplot(aes(x = calories)) +
-  geom_histogram(fill = "green", color = "black")+ 
+  geom_histogram(fill = "green", color = "black") + 
 labs(
     x = "Calories per Item",
     y = "Frequency",
@@ -98,7 +100,7 @@ labs(
 menustat_df %>%
   select(rest_type, calories) %>%
   ggplot(aes(x = calories, color = rest_type)) +
-  geom_histogram(binwidth=30)
+  geom_histogram(binwidth = 30)
 
 ff_cal + sd_cal + bevdes_cal + conv_cal
 ```
