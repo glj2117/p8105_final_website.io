@@ -337,9 +337,6 @@ div.tocify {
   <a href="data_processing.html">Data Pre-Processing</a>
 </li>
 <li>
-  <a href="EDA.html">Exploratory Analysis</a>
-</li>
-<li>
   <a href="exploratory_analysis_dashboard.html">Exploratory Analysis Dashboard</a>
 </li>
 <li>
@@ -365,31 +362,6 @@ div.tocify {
 </div>
 
 
-<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre><code>## Rows: 217653 Columns: 48
-## ── Column specification ─────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (18): restaurant, rest_type, food_category, item_name, item_description,...
-## dbl (30): year, menu_item_id, serving_size, calories, total_fat, saturated_f...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## Rows: 1144 Columns: 4
-## ── Column specification ─────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (3): restaurant, rest_type, boro
-## dbl (1): zipcode
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## `summarise()` has grouped output by &#39;zipcode&#39;. You can override using the `.groups` argument.
-## Rows: 526 Columns: 7
-## ── Column specification ─────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## dbl (7): zipcode, med_income, prop_bipoc, prop_white, prop_other, prop_femal...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
 <p>The overarching goal of this project was to analyze nutritional data
@@ -542,16 +514,40 @@ distribution.</p>
 </div>
 <div id="additional-statistical-analysis" class="section level2">
 <h2>Additional Statistical Analysis</h2>
-<p>We evaluated the relationship between the proportion of a sit down
-and fast food restaurant to occur in a zip code and relevant
+<p>We evaluated the relationship between the proportion of a sit-down or
+fast-food restaurant to occur in a zip code with relevant
 sociodemographic predictors. We used linear and logistic models at the
-zip code level to estimate proportion of restaurant type based on
-proportions of race (white, other, bipoc), sex (male and female), and
-median household income (aggregated estimate at the zip code or ZCTA
+zip code level to estimate the proportion of restaurant type based on
+proportions of the race (white, other, BIPOC), sex (male and female),
+and median household income (aggregated estimate at the zip code or ZCTA
 level). We hypothesize that there are differential proportional declines
 by racial category and household income in correspondence with having a
-higher fast food restaurant occurrence proportional to any other type of
-restaurant.</p>
+higher proportional fast food restaurant occurrence than any other type
+of restaurant at the zip code level. Before running any analysis, we
+modified the restaurant location data frame by creating the proportions
+of restaurant type for each zip code. Then we mutated a factored binary
+variable for restaurant type by zip code, with 1 representing any
+occurrence of the specific restaurant type and 0 representing no
+occurrence of the specific restaurant type. This newly created data
+frame was joined with the ACS data frame by zip code to form our final
+data frame with all variables needed for analysis.</p>
+<p>For each model, we used the same set of sociodemographic predictors,
+which included the proportion of the population that identifies as
+white, the proportion of the population that identifies in a BIPOC
+racial category, the proportion of the population that identifies as
+‘other’, the proportion of the population that identifies with the
+biological sex female, and the median household income. The first linear
+model utilized OLS regression to evaluate the outcome, and proportion of
+fast-food restaurants, based on the described predictors. The second
+model incorporated a binary outcome using logistic regression to
+evaluate the outcome of a factor variable that indicated the presence or
+absence of a fast-food restaurant. The method used for both the linear
+and logistic models was repeated for the outcome of sit-down
+restaurants, which was represented as a proportion and binary factor
+variable, respectively, for each model type. The linear fit for the
+predictors female, BIPOC, and median income were graphed for each of the
+four models described above to further illustrate the relationships
+within the models.</p>
 <pre class="r"><code>##Linear regression plots: fast food 
 #female 
 fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
@@ -691,11 +687,11 @@ summary(fit.logit.fast)</code></pre>
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
-<p>Distribution of calories remained roughly the same over all years,
-whereas trans fat and protein distributions seemed to increase. When
-visualizing nutritional content by food category, we see that sit-down
-restaurants have the highest calorie and fat distribution over all food
-categories. When it comes to protein, convenience stores and
+<p>The distribution of calories remained roughly the same over all
+years, whereas trans fat and protein distributions seemed to increase.
+When visualizing nutritional content by food category, we see that
+sit-down restaurants have the highest calorie and fat distribution over
+all food categories. When it comes to protein, convenience stores and
 beverages/desserts have the highest protein distributions (albeit with
 much larger error bar ranges). This is likely due to the offering of
 protein bars and protein shakes at these types of establishments, that
@@ -703,6 +699,36 @@ are not offered at regular or sit-down fast food restaurant chains. With
 an increase of public awareness and initiatives for healthy eating since
 2008, we would have expected that calories and trans fat distributions
 would decrease over time, rather than remain constant.</p>
+<p>In the linear regression model that evaluated the relationship
+between the proportion of fast food restaurants in relation to our
+included sociodemographic variables, the proportion of the females
+within a zip code was marginally significant (p-value = 0.03) indicating
+an inverse relationship. For every 1 percentage increase in the
+proportion of women residing within a zip code, there is a -7.28
+decrease in the proportion of fast food restaurants within a zip code
+(Model 1). To further understand this potential relationship on a logit
+scale, we employed logistic regression using a binary outcome of fast
+food restaurants within a zip code (0 = number of fast food restaurants
+&gt; 10; 1 = number of fast food restaurants &lt; 10), and we didn’t
+observe any significant coefficients, but the direction of the
+proportion of women remained inversely associated. In spite of our
+model’s constraints by residual confounding and ecological proportions,
+the logit and linear models’ shared direction of women residing within a
+zip code corresponding to fewer fast food restaurants is an unexpected
+finding. In light of our hypothesis for racial category stratification,
+results showed non-significance, however, we note marginal differential
+declines between the proportion of white residents versus BIPOC
+residents within a zip code. In the case of median household income, we
+actually found the direction in the opposite direction–indicating a
+warranted change of socioeconomic covariates to our model that more
+accurately represents income in quintiles to compare lowest to highest
+income zip codes. Our guiding a priori were moderately met with our
+model’s limitations. Further analyses require the inclusion of aggregate
+nutritional metrics and location specific restaurants to better identify
+highly burdened areas at the zip code level. Additionally, spatial
+resolution changes may be needed to guarantee accurate and robust data
+since the ZCTA level variably changes over time with available metrics
+for specific variables included in this analysis.</p>
 </div>
 <div id="references" class="section level2">
 <h2>References</h2>
