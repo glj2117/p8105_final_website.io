@@ -14,13 +14,11 @@ rest_locations = read_csv("data/restaurant_location.csv")
 ```
 
 
-<<<<<<< HEAD
-```{r frequency}
+
+```{r frequency, message = FALSE, warning = FALSE}
 library(tidyverse)
 library(tidycensus)
-=======
-```{r frequency, warning = FALSE, message = FALSE}
->>>>>>> 01742c19538afe7e69553ddb1bd56da2a21461dd
+
 rest_locations %>%
   select(restaurant, rest_type) %>%
   arrange(rest_type) %>%
