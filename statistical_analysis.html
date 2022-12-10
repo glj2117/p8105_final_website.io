@@ -762,34 +762,9 @@ menustat_df %&gt;%
 ## 2 convenience          17
 ## 3 fast food             6
 ## 4 sit-down              7</code></pre>
-<pre class="r"><code>###creating new columns
-
-#menustat_df_test = menustat_df %&gt;% 
-#  group_by(rest_type, restaurant)  %&gt;%  # group by one or more variables
-#  summarise(mean_calories = mean(calories),
-#            median_calories = median(calories))  # calculate mean and median of column
-#
-#rest_locations %&gt;%
-#  group_by(zipcode, rest_type, restaurant) %&gt;%
-#  count()
-#
-#to look specifically at ny truncate the dataframe for relevant restaurant in the city
-#combined dataframe for summaries
-#tidied(1st) -&gt; summary metrics(relevant nutritional variables) -&gt; creating combined df_metrics(zipcode) -&gt;  joining on zipcode with #tidy census -&gt; regression OLS at the zipcode level
-#
-#rest_locations %&gt;%
-#  group_by(zipcode, rest_type) %&gt;%
-#summarise (count_rest = n())
-#
-##create a count for rest_type for every distinct zip then multiply the #of rest_type by associated metric
-#rest_locations %&gt;%
-#  select(restaurant, rest_type, zipcode) %&gt;%
-#  group_by(rest_type) %&gt;%
-#  
-#food environment quality ~ predictors, zipcode level mean sugar, fat etc. , median house hold income, %race, etc. </code></pre>
 </div>
-<div id="new-model-data-building" class="section level2">
-<h2>NEW Model data/ building</h2>
+<div id="new-model-building" class="section level1">
+<h1>New Model Building</h1>
 <pre class="r"><code>## creates the total_rest_acs dataframe 
 
 #DATAFRAME 1:REST 

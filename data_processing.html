@@ -492,22 +492,11 @@ div.tocify {
     restaurant, rest_type, boro, zipcode
     ) %&gt;%
   write_csv(&quot;data/restaurant_location.csv&quot;)</code></pre>
-<pre><code>## Rows: 28112 Columns: 6
-## ── Column specification ─────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (5): DBA, BORO, BUILDING, STREET, ZIPCODE
-## dbl (1): CAMIS
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 </div>
 <div id="census-data" class="section level2">
 <h2>Census Data</h2>
 <pre class="r"><code># Set API key, only need to do this once but &#39;overwrite&#39; will allow multiple
 census_api_key(&quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;, overwrite = TRUE, install = TRUE)</code></pre>
-<pre><code>## Your original .Renviron will be backed up and stored in your R HOME directory if needed.</code></pre>
-<pre><code>## Your API key has been stored in your .Renviron and can be accessed by Sys.getenv(&quot;CENSUS_API_KEY&quot;). 
-## To use now, restart R or run `readRenviron(&quot;~/.Renviron&quot;)`</code></pre>
 <pre><code>## [1] &quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;</code></pre>
 <pre class="r"><code># run to use 
 readRenviron(&quot;~/.Renviron&quot;)
@@ -557,9 +546,9 @@ nyc_acs_data &lt;- get_acs(state = &quot;ny&quot;,
     pivot_wider(
       names_from = &quot;variable&quot;, 
       values_from = &quot;estimate&quot;
-    )</code></pre>
-<pre><code>## Getting data from the 2015-2019 5-year ACS</code></pre>
-<pre class="r"><code>#data manipulation to make proportions &amp; data export 
+    )
+
+#data manipulation to make proportions &amp; data export 
 nyc_acs_data_prop = nyc_acs_data %&gt;% 
   mutate(prop_bipoc = (black_aa + ai_an + asain + hawaiian_pi)/total_pop, 
          prop_white = white/total_pop, 
@@ -684,40 +673,6 @@ filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
 #acs_ny_comb %&gt;%
 #  summarise(across(everything(), ~sum(is.na(.x)))) %&gt;%
 #  knitr::kable()</code></pre>
-<p><strong>ACS multi year pull through <code>map_dfr</code>
-function</strong></p>
-<pre class="r"><code>#years interested
-##years &lt;- lst(2016, 2017, 2018, 2019, 2020) 
-#zctas
-##my_zcta &lt;- c(&quot;^ZCTA5 36&quot;)
-#variables
-##my_vars &lt;- c(med_income = &quot;B19013_001&quot;,
-##             total_pop = &quot;B01003_001&quot;, 
-##             race_total = &quot;B02001_001&quot;, 
-##             white = &quot;B02001_002&quot;, 
-##             black_aa = &quot;B02001_003&quot;, 
-##             ai_an = &quot;B02001_004&quot;, 
-##             asian = &quot;B02001_005&quot;, 
-##             hawaiian_pi = &quot;B02001_006&quot;, 
-##             other = &quot;B02001_007&quot;
-##             )
-##
-##ny_acs &lt;- map_dfr(
-##  years,
-##  ~ get_acs(
-##      geography = &quot;zcta&quot;, #idk why there is an error here after designating state and county as NULL
-##      state = NULL,
-##      county = NULL,
-##      variables = my_vars,
-##      zcta = my_zcta,
-##      year = .x,
-##      survey = &quot;acs5&quot;
-##      ),
-##  .id = &quot;year&quot;  # when combining results, add id var (name of list item)
-##  ) %&gt;%
-##  
-##  #arrange(variable, NAME) %&gt;% 
-##  print()</code></pre>
 </div>
 
 

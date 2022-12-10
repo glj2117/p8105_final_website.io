@@ -557,13 +557,12 @@ fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
     title = &quot;Proportion of Fast Food Restaurants by Proportion of Female in Population&quot;,
     x = &quot;Proportion of Female Residents&quot;,
     y = &quot;Proportion of Fast Food Restaurants&quot;
-  )</code></pre>
-</div>
-<div
-id="interpretation-as-female-proportion-increases-fast-food-prop-decreases"
-class="section level2">
-<h2>Interpretation: as female proportion increases fast food prop
-decreases</h2>
+  )
+
+fem_ff</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+## Interpretation: as female proportion increases fast food prop
+decreases</p>
 <p>#bipoc</p>
 <pre class="r"><code>bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
   geom_point() +
@@ -572,13 +571,12 @@ decreases</h2>
     title = &quot;Proportion of Fast Food Restaurants by Proportion of BIPOC in Population&quot;,
     x = &quot;Proportion of BIPOC Residents&quot;,
     y = &quot;Proportion of Fast Food Restaurants&quot;
-  )</code></pre>
-</div>
-<div
-id="interpretation-as-bipoc-proportion-increases-fast-food-prop-increases"
-class="section level2">
-<h2>interpretation: as BIPOC proportion increases fast food prop
-increases</h2>
+  )
+
+bipoc_ff</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+## interpretation: as BIPOC proportion increases fast food prop
+increases</p>
 <p>#medincome</p>
 <pre class="r"><code>med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
   geom_point() +
@@ -587,20 +585,39 @@ increases</h2>
     title = &quot;Proportion Fast Food Restaurants by Median income&quot;,
     x = &quot;Median Income&quot;,
     y = &quot;Proportion of Fast Food Restaurants&quot;
-  )</code></pre>
-</div>
-<div
-id="interpretation-as-median-income-increases-fast-food-prop-slightly-decreases"
-class="section level2">
-<h2>Interpretation: as median income increases fast food prop SLIGHTLY
-decreases</h2>
-<pre><code>
-The hypothesis of these models was to see how the identified sociodemographic variables would impact the presence of a restaurant type throughout zip codes in NYC. To perform these analyses we had to further modify the restaurant location dataframe and create proportions of restaurant type for each zip code. We also mutated a factored binary variable for restaurant type by zip code with 1 representing the restaurant type is present and 0 representing the restaurant type was absent. This manipulated restaurant type dataframe was joined with the ACS dataframe by zip code to create a total dataframe with all variables needed for analysis. 
+  )
 
-Then each model used the same set of predictors which included proportion of the population that identifies as white, proportion of the population that identifies in a BIPOC racial category, proportion of the population that identifies as ‘other’, proportion of the population that identifies with the biological sex female, and the median household income. The first linear model utilized OLS regression to look at the outcome, proportion of fast food restaurants, based on the described predictors. The second model incorporated a binary logistic regression to look at the outcome of a factor variable which indicated the presence or absence of a fast food restaurant. The method used for both the linear and logistic models was repeated for the outcome of sit down restaurants which was represented as a proportion and binary factor variable respectively for each model type. The linear fit for the predictors female, BIPOC and median income were graphed for each of the four models described above to further illustrate the relationships within the models. 
-
-```r
-##model lm 
+med_in_ff</code></pre>
+<p><img src="project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" />
+## Interpretation: as median income increases fast food prop SLIGHTLY
+decreases</p>
+<p>The hypothesis of these models was to see how the identified
+sociodemographic variables would impact the presence of a restaurant
+type throughout zip codes in NYC. To perform these analyses we had to
+further modify the restaurant location dataframe and create proportions
+of restaurant type for each zip code. We also mutated a factored binary
+variable for restaurant type by zip code with 1 representing the
+restaurant type is present and 0 representing the restaurant type was
+absent. This manipulated restaurant type dataframe was joined with the
+ACS dataframe by zip code to create a total dataframe with all variables
+needed for analysis.</p>
+<p>Then each model used the same set of predictors which included
+proportion of the population that identifies as white, proportion of the
+population that identifies in a BIPOC racial category, proportion of the
+population that identifies as ‘other’, proportion of the population that
+identifies with the biological sex female, and the median household
+income. The first linear model utilized OLS regression to look at the
+outcome, proportion of fast food restaurants, based on the described
+predictors. The second model incorporated a binary logistic regression
+to look at the outcome of a factor variable which indicated the presence
+or absence of a fast food restaurant. The method used for both the
+linear and logistic models was repeated for the outcome of sit down
+restaurants which was represented as a proportion and binary factor
+variable respectively for each model type. The linear fit for the
+predictors female, BIPOC and median income were graphed for each of the
+four models described above to further illustrate the relationships
+within the models.</p>
+<pre class="r"><code>##model lm 
 #proportion of fast food prediction
 fit.fast &lt;- lm(prop_fast ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs)
 
