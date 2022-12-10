@@ -22,7 +22,7 @@ library(labelled)
 ```
 
 
-```{r, echo = FALSE}
+```{r, echo = FALSE, warning = FALSE, message = FALSE}
 menustat_df = read_csv("./data/menustat_combined.csv")
 rest_locations = read_csv("./data/restaurant_location.csv")
 
@@ -104,9 +104,11 @@ Lastly, nutritional metrics and restaurant type were combined. We created a box 
 
 ## Additional Statistical Analysis
 
-We evaluated the relationship between the proportion of a sit down and fast food restaurant to occur in a zip code and relevant sociodemographic predictors. We used linear and logistic models at the zip code level to estimate proportion of restaurant type based on proportions of race (white, other, bipoc), sex (male and female), and median household income (aggregated estimate at the zip code or ZCTA level). We hypothesize that there are differential proportional declines by racial category and household income in correspondence with having a higher fast food restaurant occurrence proportional to any other type of restaurant. 
+We evaluated the relationship between the proportion of a sit-down or fast-food restaurant to occur in a zip code with relevant sociodemographic predictors. We used linear and logistic models at the zip code level to estimate the proportion of restaurant type based on proportions of the race (white, other, BIPOC), sex (male and female), and median household income (aggregated estimate at the zip code or ZCTA level). We hypothesize that there are differential proportional declines by racial category and household income in correspondence with having a higher proportional fast food restaurant occurrence than any other type of restaurant at the zip code level. Before running any analysis, we modified the restaurant location data frame by creating the proportions of restaurant type for each zip code. Then we mutated a factored binary variable for restaurant type by zip code, with 1 representing any occurrence of the specific restaurant type and 0 representing no occurrence of the specific restaurant type. This newly created data frame was joined with the ACS data frame by zip code to form our final data frame with all variables needed for analysis. 
 
-```{r}
+For each model, we used the same set of sociodemographic predictors, which included the proportion of the population that identifies as white, the proportion of the population that identifies in a BIPOC racial category, the proportion of the population that identifies as ‘other’, the proportion of the population that identifies with the biological sex female, and the median household income. The first linear model utilized OLS regression to evaluate the outcome, and proportion of fast-food restaurants, based on the described predictors. The second model incorporated a binary outcome using logistic regression to evaluate the outcome of a factor variable that indicated the presence or absence of a fast-food restaurant. The method used for both the linear and logistic models was repeated for the outcome of sit-down restaurants, which was represented as a proportion and binary factor variable, respectively, for each model type. The linear fit for the predictors female, BIPOC, and median income were graphed for each of the four models described above to further illustrate the relationships within the models.
+
+```{r, warning = FALSE, message = FALSE}
 
 ##Linear regression plots: fast food 
 #female 
@@ -122,7 +124,7 @@ fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
 ## Interpretation: as female proportion increases fast food prop decreases
 
 #bipoc 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
   geom_point() +
   geom_smooth(method = "lm", col = "red") +
@@ -135,7 +137,7 @@ bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
 ## interpretation: as BIPOC proportion increases fast food prop increases
 
 #medincome
-```{r}
+```{r, warning = FALSE, message = FALSE}
 med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
   geom_point() +
   geom_smooth(method = "lm", col = "red") +
@@ -151,7 +153,7 @@ med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
 The hypothesis of these models was to see how the identified sociodemographic variables would impact the presence of a restaurant type throughout zip codes in NYC. To perform these analyses we had to further modify the restaurant location dataframe and create proportions of restaurant type for each zip code. We also mutated a factored binary variable for restaurant type by zip code with 1 representing the restaurant type is present and 0 representing the restaurant type was absent. This manipulated restaurant type dataframe was joined with the ACS dataframe by zip code to create a total dataframe with all variables needed for analysis. 
 
 Then each model used the same set of predictors which included proportion of the population that identifies as white, proportion of the population that identifies in a BIPOC racial category, proportion of the population that identifies as ‘other’, proportion of the population that identifies with the biological sex female, and the median household income. The first linear model utilized OLS regression to look at the outcome, proportion of fast food restaurants, based on the described predictors. The second model incorporated a binary logistic regression to look at the outcome of a factor variable which indicated the presence or absence of a fast food restaurant. The method used for both the linear and logistic models was repeated for the outcome of sit down restaurants which was represented as a proportion and binary factor variable respectively for each model type. The linear fit for the predictors female, BIPOC and median income were graphed for each of the four models described above to further illustrate the relationships within the models. 
-```{r}
+```{r, warning = FALSE, message = FALSE}
 ##model lm 
 #proportion of fast food prediction
 fit.fast <- lm(prop_fast ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs)
@@ -193,7 +195,10 @@ logit_table_fast = fit.logit.fast %>%
 
 ## Discussion
 
-Distribution of calories remained roughly the same over all years, whereas trans fat and protein distributions seemed to increase. When visualizing nutritional content by food category, we see that sit-down restaurants have the highest calorie and fat distribution over all food categories. When it comes to protein, convenience stores and beverages/desserts have the highest protein distributions (albeit with much larger error bar ranges). This is likely due to the offering of protein bars and protein shakes at these types of establishments, that are not offered at regular or sit-down fast food restaurant chains. With an increase of public awareness and initiatives for healthy eating since 2008, we would have expected that calories and trans fat distributions would decrease over time, rather than remain constant. 
+The distribution of calories remained roughly the same over all years, whereas trans fat and protein distributions seemed to increase. When visualizing nutritional content by food category, we see that sit-down restaurants have the highest calorie and fat distribution over all food categories. When it comes to protein, convenience stores and beverages/desserts have the highest protein distributions (albeit with much larger error bar ranges). This is likely due to the offering of protein bars and protein shakes at these types of establishments, that are not offered at regular or sit-down fast food restaurant chains. With an increase of public awareness and initiatives for healthy eating since 2008, we would have expected that calories and trans fat distributions would decrease over time, rather than remain constant. 
+
+In the linear regression model that evaluated the relationship between the proportion of fast food restaurants in relation to our included sociodemographic variables, the proportion of the females within a zip code was marginally significant (p-value = 0.03) indicating an inverse relationship. For every 1 percentage increase in the proportion of women residing within a zip code, there is a -7.28 decrease in the proportion of fast food restaurants within a zip code (Model 1). To further understand this potential relationship on a logit scale, we employed logistic regression using a binary outcome of fast food restaurants within a zip code (0 = number of fast food restaurants > 10; 1 = number of fast food restaurants < 10), and we didn’t observe any significant coefficients, but the direction of the proportion of women remained inversely associated. In spite of our model’s constraints by residual confounding and ecological proportions, the logit and linear models’ shared direction of women residing within a zip code corresponding to fewer fast food restaurants is an unexpected finding. In light of our hypothesis for racial category stratification, results showed non-significance, however, we note marginal differential declines between the proportion of white residents versus BIPOC residents within a zip code. In the case of median household income, we actually found the direction in the opposite direction–indicating a warranted change of socioeconomic covariates to our model that more accurately represents income in quintiles to compare lowest to highest income zip codes. Our guiding a priori were moderately met with our model’s limitations. Further analyses require the inclusion of aggregate nutritional metrics and location specific restaurants to better identify highly burdened areas at the zip code level. Additionally, spatial resolution changes may be needed to guarantee accurate and robust data since the ZCTA level variably changes over time with available metrics for specific variables included in this analysis.
+
 
 ## References
 
