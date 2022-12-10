@@ -1,9 +1,24 @@
 ---
-title: "P8105 Final Project- Nutrtritional Data in NYC"
+title: "Just How Fast is Fast Food Changing in NYC?"
 output: 
   html_document:
     toc: true
     toc_float: true
 ---
 
+## Contributors
 
+* Raenita Spriggs (rs4390)
+* Kevin Patterson (kpp2126)
+* Lindsey Covell (ltc2121)
+* Gabriela Jackson (glij2117)
+* Alana Ferris (af3341)
+
+---
+
+![](images/nutrition label.jpg)
+
+---
+![](images/NYC_Downtown_Manhattan_Skyline_seen_from_Paulus_Hook_2019-12-20_IMG_7347_FRD_(cropped).jpg)
+
+## Screencast
