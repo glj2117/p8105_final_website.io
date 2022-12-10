@@ -119,6 +119,8 @@ fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
     x = "Proportion of Female Residents",
     y = "Proportion of Fast Food Restaurants"
   )
+
+fem_ff
 ```
 ## Interpretation: as female proportion increases fast food prop decreases
 
@@ -132,6 +134,8 @@ bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
     x = "Proportion of BIPOC Residents",
     y = "Proportion of Fast Food Restaurants"
   )
+
+bipoc_ff
 ```
 ## interpretation: as BIPOC proportion increases fast food prop increases
 
@@ -145,13 +149,15 @@ med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
     x = "Median Income",
     y = "Proportion of Fast Food Restaurants"
   )
+
+med_in_ff
 ```
 ## Interpretation: as median income increases fast food prop SLIGHTLY decreases
-```
 
 The hypothesis of these models was to see how the identified sociodemographic variables would impact the presence of a restaurant type throughout zip codes in NYC. To perform these analyses we had to further modify the restaurant location dataframe and create proportions of restaurant type for each zip code. We also mutated a factored binary variable for restaurant type by zip code with 1 representing the restaurant type is present and 0 representing the restaurant type was absent. This manipulated restaurant type dataframe was joined with the ACS dataframe by zip code to create a total dataframe with all variables needed for analysis. 
 
 Then each model used the same set of predictors which included proportion of the population that identifies as white, proportion of the population that identifies in a BIPOC racial category, proportion of the population that identifies as ‘other’, proportion of the population that identifies with the biological sex female, and the median household income. The first linear model utilized OLS regression to look at the outcome, proportion of fast food restaurants, based on the described predictors. The second model incorporated a binary logistic regression to look at the outcome of a factor variable which indicated the presence or absence of a fast food restaurant. The method used for both the linear and logistic models was repeated for the outcome of sit down restaurants which was represented as a proportion and binary factor variable respectively for each model type. The linear fit for the predictors female, BIPOC and median income were graphed for each of the four models described above to further illustrate the relationships within the models. 
+
 ```{r, warning = FALSE, message = FALSE}
 ##model lm 
 #proportion of fast food prediction
