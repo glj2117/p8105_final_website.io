@@ -343,7 +343,7 @@ div.tocify {
   <a href="statistical_analysis.html">Statistical Analysis</a>
 </li>
 <li>
-  <a href="http://github.com/kpatpatt/p8105_final">
+  <a href="https://github.com/glj2117/p8105_final_website.io">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -366,7 +366,10 @@ div.tocify {
 <h3>Statistical Analysis</h3>
 <pre class="r"><code>menustat_df = read_csv(&quot;data/menustat_combined.csv&quot;)
 rest_locations = read_csv(&quot;data/restaurant_location.csv&quot;)</code></pre>
-<pre class="r"><code>rest_locations %&gt;%
+<pre class="r"><code>library(tidyverse)
+library(tidycensus)
+
+rest_locations %&gt;%
   select(restaurant, rest_type) %&gt;%
   arrange(rest_type) %&gt;%
   distinct #59 restaurants</code></pre>
@@ -606,7 +609,7 @@ sd_cal = menustat_df %&gt;%
   select(rest_type, calories) %&gt;%
   filter(rest_type == &quot;sit-down&quot;) %&gt;%
   ggplot(aes(x = calories)) +
-  geom_histogram(fill = &quot;red&quot;, color = &quot;black&quot;)+ 
+  geom_histogram(fill = &quot;red&quot;, color = &quot;black&quot;) + 
 labs(
     x = &quot;Calories per Item&quot;,
     y = &quot;Frequency&quot;,
@@ -630,7 +633,7 @@ conv_cal = menustat_df %&gt;%
   select(rest_type, calories) %&gt;%
   filter(rest_type == &quot;convenience&quot;) %&gt;%
   ggplot(aes(x = calories)) +
-  geom_histogram(fill = &quot;green&quot;, color = &quot;black&quot;)+ 
+  geom_histogram(fill = &quot;green&quot;, color = &quot;black&quot;) + 
 labs(
     x = &quot;Calories per Item&quot;,
     y = &quot;Frequency&quot;,
@@ -642,7 +645,7 @@ labs(
 menustat_df %&gt;%
   select(rest_type, calories) %&gt;%
   ggplot(aes(x = calories, color = rest_type)) +
-  geom_histogram(binwidth=30)</code></pre>
+  geom_histogram(binwidth = 30)</code></pre>
 <p><img src="statistical_analysis_files/figure-html/frequency-1.png" width="672" /></p>
 <pre class="r"><code>ff_cal + sd_cal + bevdes_cal + conv_cal</code></pre>
 <p><img src="statistical_analysis_files/figure-html/frequency-2.png" width="672" /></p>
