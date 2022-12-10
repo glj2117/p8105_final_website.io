@@ -35,9 +35,6 @@ rest_freq =
   mutate(restaurant = recode(restaurant, "APPLEBEES" = "APPLEBEE'S", "AUNTIE ANNES" = "AUNTIE ANNE'S PRETZELS", "Pizza Hut" = "PIZZA HUT", "POPEYE'S" = "POPEYES", "WingStop" = "WINGSTOP"))
 ```
 
-Sidebar {.sidebar}
-======================================================================
-
 Initial Visualizations
 ======================================================================
 
@@ -70,10 +67,6 @@ rest_freq %>%
 
 Calorie Distribution By Restaurant Type
 ======================================================================
-
-Column {data-width=650}
------------------------------------------------------------------------
-
 
 ### Calorie Distribution in 2008
 
@@ -115,10 +108,6 @@ final_cal_df %>%
 Fat Distribution By Restaurant Type
 ======================================================================
 
-Column {data-width=650}
------------------------------------------------------------------------
-
-
 ### Trans Fat Distribution in 2008
 
 ```{r}
@@ -159,10 +148,6 @@ final_cal_df %>%
 Protein Distribution By Restaurant Type
 ======================================================================
 
-Column {data-width=650}
------------------------------------------------------------------------
-
-
 ### Protein Distribution in 2008
 
 ```{r}
@@ -202,9 +187,6 @@ final_cal_df %>%
 
 Nutritional Content by Food Category
 ======================================================================
-
-Column {data-width=650}
------------------------------------------------------------------------
 
 ### Calories Distribution by Food Category Overlayed
 
