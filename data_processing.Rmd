@@ -9,7 +9,7 @@ output:
 
 ### Data Cleaning and Pre-Processing
 ---
-```{r load and tidy data, echo = FALSE}
+```{r load and tidy data, echo = FALSE, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidyverse)
 library(p8105.datasets)
@@ -86,7 +86,7 @@ summary(menustat_df)
 
 ## Restaurant inspections data
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 restaurant_address = read_csv('data/Restaurants__rolled_up_.csv') %>% 
   janitor::clean_names() %>% 
   filter(
@@ -113,7 +113,7 @@ restaurant_address = read_csv('data/Restaurants__rolled_up_.csv') %>%
 
 ## Census Data 
 
-```{r}
+```{r, message = FALSE, warning = FALSE}
 # Set API key, only need to do this once but 'overwrite' will allow multiple
 census_api_key("0b1055607d9ae137c0e00de8e22ed531d7c91a44", overwrite = TRUE, install = TRUE)
 
@@ -183,7 +183,7 @@ nyc_acs_data_prop = nyc_acs_data %>%
 
 **ACS individual year pull, no function**
 ### DO NOT NEED THIS CODE CHUNK ###
-```{r ACS for one year pull}
+```{r ACS for one year pull, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidycensus)
 library(sf)
@@ -297,42 +297,4 @@ filter(str_detect(GEOID, "^10|^11")) %>%
 #  summarise(across(everything(), ~sum(is.na(.x)))) %>%
 #  knitr::kable()
 ```
-
-
-**ACS multi year pull through `map_dfr` function**
-```{r}
-#years interested
-##years <- lst(2016, 2017, 2018, 2019, 2020) 
-#zctas
-##my_zcta <- c("^ZCTA5 36")
-#variables
-##my_vars <- c(med_income = "B19013_001",
-##             total_pop = "B01003_001", 
-##             race_total = "B02001_001", 
-##             white = "B02001_002", 
-##             black_aa = "B02001_003", 
-##             ai_an = "B02001_004", 
-##             asian = "B02001_005", 
-##             hawaiian_pi = "B02001_006", 
-##             other = "B02001_007"
-##             )
-##
-##ny_acs <- map_dfr(
-##  years,
-##  ~ get_acs(
-##      geography = "zcta", #idk why there is an error here after designating state and county as NULL
-##      state = NULL,
-##      county = NULL,
-##      variables = my_vars,
-##      zcta = my_zcta,
-##      year = .x,
-##      survey = "acs5"
-##      ),
-##  .id = "year"  # when combining results, add id var (name of list item)
-##  ) %>%
-##  
-##  #arrange(variable, NAME) %>% 
-##  print()
-```
-
 
