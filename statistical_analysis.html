@@ -367,25 +367,8 @@ div.tocify {
 
 <div id="statistical-analysis" class="section level3">
 <h3>Statistical Analysis</h3>
-<pre class="r"><code>menustat_df = read_csv(&quot;data/menustat_combined.csv&quot;)</code></pre>
-<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
-<pre><code>## Rows: 217653 Columns: 48
-## ── Column specification ─────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (18): restaurant, rest_type, food_category, item_name, item_description,...
-## dbl (30): year, menu_item_id, serving_size, calories, total_fat, saturated_f...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>rest_locations = read_csv(&quot;data/restaurant_location.csv&quot;)</code></pre>
-<pre><code>## Rows: 1144 Columns: 4
-## ── Column specification ─────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr (3): restaurant, rest_type, boro
-## dbl (1): zipcode
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>menustat_df = read_csv(&quot;data/menustat_combined.csv&quot;)
+rest_locations = read_csv(&quot;data/restaurant_location.csv&quot;)</code></pre>
 <pre class="r"><code>rest_locations %&gt;%
   select(restaurant, rest_type) %&gt;%
   arrange(rest_type) %&gt;%
@@ -665,10 +648,6 @@ menustat_df %&gt;%
   geom_histogram(binwidth=30)</code></pre>
 <p><img src="statistical_analysis_files/figure-html/frequency-1.png" width="672" /></p>
 <pre class="r"><code>ff_cal + sd_cal + bevdes_cal + conv_cal</code></pre>
-<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
-## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="statistical_analysis_files/figure-html/frequency-2.png" width="672" /></p>
 <pre class="r"><code>####calculations for calories, total_fat, sodium, carbohydrates, sugar
 ##calories 
@@ -834,25 +813,18 @@ rest_locations_new = rest_locations %&gt;%
          prop_sit = sit_down/total, 
          logit_sit = ifelse(sit_down &gt; 0, 1, 0),
          logit_fast = ifelse(fast_food &gt; 10, 1, 0)) %&gt;% 
-  select(-c(total)) </code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;zipcode&#39;. You can
-## override using the `.groups` argument.</code></pre>
-<pre class="r"><code>#frequency of fast food outlets within a zipcode &gt; median
+  select(-c(total)) 
+
+#frequency of fast food outlets within a zipcode &gt; median
 #rest_locations_new %&gt;%
 #  mutate(fast_food = as.numeric(fast_food)) %&gt;%
 #  summarise(median = median(fast_food))
   
 
 #DATAFRAME 2: ACS
-nyc_acs = read_csv(&quot;data/nyc_acs_reg&quot;)</code></pre>
-<pre><code>## Rows: 526 Columns: 7
-## ── Column specification ─────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## dbl (7): zipcode, med_income, prop_bipoc, prop_white, prop_other, prop_femal...
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>## JOIN ##
+nyc_acs = read_csv(&quot;data/nyc_acs_reg&quot;)
+
+## JOIN ##
 
 total_rest_acs = left_join(rest_locations_new, nyc_acs, by = &quot;zipcode&quot;) %&gt;% 
   drop_na()
@@ -1040,18 +1012,10 @@ labs(
 ##formating linear graph 
 
 med_in_ff + bipoc_ff + fem_ff + med_in_sit + bipoc_sit + fem_sit</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="statistical_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>## formatting log graphs 
 
 log_FF + log_SIT</code></pre>
-<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
-## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
 <p><img src="statistical_analysis_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
 </div>
 

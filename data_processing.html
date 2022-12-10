@@ -367,68 +367,6 @@ div.tocify {
 
 <div id="data-cleaning-and-pre-processing" class="section level2">
 <h2>### Data Cleaning and Pre-Processing</h2>
-<pre><code>## ── Attaching packages ──────────────────── tidyverse 1.3.2 ──
-## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
-## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
-## ✔ tidyr   1.2.0      ✔ stringr 1.4.1 
-## ✔ readr   2.1.2      ✔ forcats 0.5.2 
-## ── Conflicts ─────────────────────── tidyverse_conflicts() ──
-## ✖ dplyr::filter() masks stats::filter()
-## ✖ dplyr::lag()    masks stats::lag()
-## Loading required package: viridisLite
-## 
-## 
-## Attaching package: &#39;rvest&#39;
-## 
-## 
-## The following object is masked from &#39;package:readr&#39;:
-## 
-##     guess_encoding</code></pre>
-<pre><code>## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
-
-## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion</code></pre>
 <pre><code>##   restaurant                    rest_type           year     
 ##  Length:217653      beverages_dessert: 25582   Min.   :2008  
 ##  Class :character   convenience      : 15058   1st Qu.:2014  
@@ -639,21 +577,9 @@ nyc_acs_data_prop = nyc_acs_data %&gt;%
 NEED THIS CODE CHUNK ###</p>
 <pre class="r"><code>library(tidyverse)
 library(tidycensus)
-library(sf)</code></pre>
-<pre><code>## Linking to GEOS 3.10.2, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
-<pre class="r"><code>library(scales)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;scales&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:viridis&#39;:
-## 
-##     viridis_pal</code></pre>
-<pre><code>## The following object is masked from &#39;package:purrr&#39;:
-## 
-##     discard</code></pre>
-<pre><code>## The following object is masked from &#39;package:readr&#39;:
-## 
-##     col_factor</code></pre>
-<pre class="r"><code>#2016
+library(sf)
+library(scales)
+#2016
 acs_ny_2016 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -671,9 +597,9 @@ acs_ny_2016 &lt;- get_acs( state = &quot;ny&quot;,
   survey = &quot;acs5&quot;, 
   year = 2016) %&gt;% 
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
-  tibble::add_column(year = 2016)</code></pre>
-<pre><code>## Getting data from the 2012-2016 5-year ACS</code></pre>
-<pre class="r"><code>#2017
+  tibble::add_column(year = 2016)
+  
+#2017
 acs_ny_2017 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -690,9 +616,9 @@ acs_ny_2017 &lt;- get_acs( state = &quot;ny&quot;,
   survey = &quot;acs5&quot;, 
   year = 2017) %&gt;% 
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
-  tibble::add_column(year = 2017)</code></pre>
-<pre><code>## Getting data from the 2013-2017 5-year ACS</code></pre>
-<pre class="r"><code>#2018
+  tibble::add_column(year = 2017)
+
+#2018
 acs_ny_2018 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -710,9 +636,9 @@ acs_ny_2018 &lt;- get_acs( state = &quot;ny&quot;,
   survey = &quot;acs5&quot;, 
   year = 2018) %&gt;% 
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
-  tibble::add_column(year = 2018)</code></pre>
-<pre><code>## Getting data from the 2014-2018 5-year ACS</code></pre>
-<pre class="r"><code>#2019
+  tibble::add_column(year = 2018)
+
+#2019
 acs_ny_2019 &lt;- get_acs( state = &quot;ny&quot;,
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -730,9 +656,9 @@ acs_ny_2019 &lt;- get_acs( state = &quot;ny&quot;,
   survey = &quot;acs5&quot;, 
   year = 2019) %&gt;% 
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
-  tibble::add_column(year = 2019)</code></pre>
-<pre><code>## Getting data from the 2015-2019 5-year ACS</code></pre>
-<pre class="r"><code>#2020
+  tibble::add_column(year = 2019)
+
+#2020
 acs_ny_2020 &lt;- get_acs(
   geography = &quot;zcta&quot;, 
   variables = c(med_income = &quot;B19013_001&quot;,
@@ -750,9 +676,9 @@ acs_ny_2020 &lt;- get_acs(
   survey = &quot;acs5&quot;, 
   year = 2020) %&gt;% 
 filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
-  tibble::add_column(year = 2020)</code></pre>
-<pre><code>## Getting data from the 2016-2020 5-year ACS</code></pre>
-<pre class="r"><code>#acs_ny_comb &lt;- bind_rows(acs_ny_2016, acs_ny_2017, acs_ny_2018, acs_ny_2019, acs_ny_2020) %&gt;% #there are 254 zctas with estimate NA&#39;s
+  tibble::add_column(year = 2020)
+
+#acs_ny_comb &lt;- bind_rows(acs_ny_2016, acs_ny_2017, acs_ny_2018, acs_ny_2019, acs_ny_2020) %&gt;% #there are 254 zctas with estimate NA&#39;s
   #janitor::clean_names() %&gt;%
   #write_csv(&quot;data/acs_ny_combined.csv&quot;)
 
