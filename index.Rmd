@@ -5,7 +5,8 @@ output:
     toc: true
     toc_float: true
 ---
-## P8105 Final Project Fall 2022
+
+## Contributors
 
 * Raenita Spriggs (rs4390)
 * Kevin Patterson (kpp2126)
@@ -20,3 +21,4 @@ output:
 ---
 ![](images/NYC_Downtown_Manhattan_Skyline_seen_from_Paulus_Hook_2019-12-20_IMG_7347_FRD_(cropped).jpg)
 
+## Screencast
