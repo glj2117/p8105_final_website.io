@@ -34,7 +34,7 @@ data2018 = read_excel((file = "data/annual_data2018.xlsx"), col_types = "text")
 data2019 = read_excel((file = "data/annual_data2019.xlsx"), col_types = "text")
 data2020 = read_excel((file = "data/annual_data2020.xlsx"), col_types = "text")
 
-#clean and tidy   
+  
 menustat_df = bind_rows(data2008, data2010, data2012, data2013, data2014, data2015, data2016, data2017, data2018, data2019, data2020) %>% 
   janitor::clean_names() %>% 
   mutate(
@@ -114,15 +114,15 @@ restaurant_address = read_csv('data/Restaurants__rolled_up_.csv') %>%
 ## Census Data 
 
 ```{r, message = FALSE, warning = FALSE}
-# Set API key, only need to do this once but 'overwrite' will allow multiple
+
 census_api_key("0b1055607d9ae137c0e00de8e22ed531d7c91a44", overwrite = TRUE, install = TRUE)
 
-# run to use 
+ 
 readRenviron("~/.Renviron")
-#calls API key 
+
 Sys.getenv("CENSUS_API_KEY")
 
-# Call ist of all variables for ACS
+
 vars_list = load_variables( 
                           year = 2016, 
                            dataset = "acs5", 
@@ -130,20 +130,7 @@ vars_list = load_variables(
 
             view()
 
-# B19013_001 median household income
-# B01003_001 total population
-# B02001_001 total population (for race)
-# B02001_002 white alone
-# B02001_003 black alone
-# B02001_004 american indian/alaskan native 
-# B02001_005 asian alone
-# B02001_006 native hawaiian and other pacific islander 
-# B02001_007 Some other race alone
-# B01001_026 female sex 
-# B01001_002 male sex 
-# PWGTP weight variable 
-
-# Get data 2015-2019 for NYC by ACS & output in wide format 
+ 
 nyc_acs_data <- get_acs(state = "ny",
                geography = "zcta",
                year = 2019,
@@ -167,7 +154,7 @@ nyc_acs_data <- get_acs(state = "ny",
       values_from = "estimate"
     )
 
-#data manipulation to make proportions & data export 
+
 nyc_acs_data_prop = nyc_acs_data %>% 
   mutate(prop_bipoc = (black_aa + ai_an + asain + hawaiian_pi)/total_pop, 
          prop_white = white/total_pop, 
@@ -181,14 +168,13 @@ nyc_acs_data_prop = nyc_acs_data %>%
         
 ```
 
-**ACS individual year pull, no function**
-### DO NOT NEED THIS CODE CHUNK ###
+
 ```{r ACS for one year pull, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidycensus)
 library(sf)
 library(scales)
-#2016
+
 acs_ny_2016 <- get_acs( state = "ny",
   geography = "zcta", 
   variables = c(med_income = "B19013_001",
@@ -208,7 +194,7 @@ acs_ny_2016 <- get_acs( state = "ny",
 filter(str_detect(GEOID, "^10|^11")) %>%
   tibble::add_column(year = 2016)
   
-#2017
+
 acs_ny_2017 <- get_acs( state = "ny",
   geography = "zcta", 
   variables = c(med_income = "B19013_001",
@@ -227,7 +213,7 @@ acs_ny_2017 <- get_acs( state = "ny",
 filter(str_detect(GEOID, "^10|^11")) %>%
   tibble::add_column(year = 2017)
 
-#2018
+
 acs_ny_2018 <- get_acs( state = "ny",
   geography = "zcta", 
   variables = c(med_income = "B19013_001",
@@ -247,7 +233,7 @@ acs_ny_2018 <- get_acs( state = "ny",
 filter(str_detect(GEOID, "^10|^11")) %>%
   tibble::add_column(year = 2018)
 
-#2019
+
 acs_ny_2019 <- get_acs( state = "ny",
   geography = "zcta", 
   variables = c(med_income = "B19013_001",
@@ -267,7 +253,7 @@ acs_ny_2019 <- get_acs( state = "ny",
 filter(str_detect(GEOID, "^10|^11")) %>%
   tibble::add_column(year = 2019)
 
-#2020
+
 acs_ny_2020 <- get_acs(
   geography = "zcta", 
   variables = c(med_income = "B19013_001",
@@ -287,14 +273,6 @@ acs_ny_2020 <- get_acs(
 filter(str_detect(GEOID, "^10|^11")) %>%
   tibble::add_column(year = 2020)
 
-#acs_ny_comb <- bind_rows(acs_ny_2016, acs_ny_2017, acs_ny_2018, acs_ny_2019, acs_ny_2020) %>% #there are 254 zctas with estimate NA's
-  #janitor::clean_names() %>%
-  #write_csv("data/acs_ny_combined.csv")
 
-# drop_na(estimate) #if we want to drop the 254 NA's but check what the mapping looks like
-
-#acs_ny_comb %>%
-#  summarise(across(everything(), ~sum(is.na(.x)))) %>%
-#  knitr::kable()
 ```
 
