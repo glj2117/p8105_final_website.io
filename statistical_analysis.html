@@ -13,7 +13,7 @@
 
 <title>Statistical Analysis</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -183,8 +183,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -192,9 +192,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -360,6 +367,692 @@ div.tocify {
 
 <div id="statistical-analysis" class="section level3">
 <h3>Statistical Analysis</h3>
+<pre class="r"><code>menustat_df = read_csv(&quot;data/menustat_combined.csv&quot;)</code></pre>
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 217653 Columns: 48
+## ── Column specification ─────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (18): restaurant, rest_type, food_category, item_name, item_description,...
+## dbl (30): year, menu_item_id, serving_size, calories, total_fat, saturated_f...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>rest_locations = read_csv(&quot;data/restaurant_location.csv&quot;)</code></pre>
+<pre><code>## Rows: 1144 Columns: 4
+## ── Column specification ─────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (3): restaurant, rest_type, boro
+## dbl (1): zipcode
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>rest_locations %&gt;%
+  select(restaurant, rest_type) %&gt;%
+  arrange(rest_type) %&gt;%
+  distinct #59 restaurants</code></pre>
+<pre><code>## # A tibble: 59 × 2
+##    restaurant             rest_type        
+##    &lt;chr&gt;                  &lt;chr&gt;            
+##  1 STARBUCKS COFFEE       beverages_dessert
+##  2 TROPICAL SMOOTHIE CAFE beverages_dessert
+##  3 KRISPY KREME           beverages_dessert
+##  4 DUNKIN’                beverages_dessert
+##  5 JAMBA JUICE            beverages_dessert
+##  6 BASKIN ROBBINS         beverages_dessert
+##  7 MCDONALD&#39;S             fast food        
+##  8 POPEYES                fast food        
+##  9 KFC                    fast food        
+## 10 CHIPOTLE MEXICAN GRILL fast food        
+## # … with 49 more rows</code></pre>
+<pre class="r"><code>menustat_df %&gt;%
+  select(restaurant, rest_type) %&gt;%
+  arrange(rest_type) %&gt;%
+  distinct #59 restaurants</code></pre>
+<pre><code>## # A tibble: 106 × 2
+##    restaurant             rest_type        
+##    &lt;chr&gt;                  &lt;chr&gt;            
+##  1 Starbucks              beverages_dessert
+##  2 Baskin Robbins         beverages_dessert
+##  3 Dunkin&#39; Donuts         beverages_dessert
+##  4 Jamba Juice            beverages_dessert
+##  5 Krispy Kreme           beverages_dessert
+##  6 Tropical Smoothie Café beverages_dessert
+##  7 7 Eleven               convenience      
+##  8 Sheetz                 convenience      
+##  9 Wawa                   convenience      
+## 10 Casey&#39;s General Store  convenience      
+## # … with 96 more rows</code></pre>
+<pre class="r"><code>menustat_df %&gt;%
+  select(restaurant, rest_type) %&gt;%
+  arrange(rest_type) %&gt;%
+  distinct #106 restaurants</code></pre>
+<pre><code>## # A tibble: 106 × 2
+##    restaurant             rest_type        
+##    &lt;chr&gt;                  &lt;chr&gt;            
+##  1 Starbucks              beverages_dessert
+##  2 Baskin Robbins         beverages_dessert
+##  3 Dunkin&#39; Donuts         beverages_dessert
+##  4 Jamba Juice            beverages_dessert
+##  5 Krispy Kreme           beverages_dessert
+##  6 Tropical Smoothie Café beverages_dessert
+##  7 7 Eleven               convenience      
+##  8 Sheetz                 convenience      
+##  9 Wawa                   convenience      
+## 10 Casey&#39;s General Store  convenience      
+## # … with 96 more rows</code></pre>
+<pre class="r"><code>#understanding the dataframes comparison
+#install.packages(&quot;arsenal&quot;)
+#summary(arsenal::comparedf(rest_locations, menustat_df))
+
+#we are seeing NA&#39;s because &quot;Jersey Mike&#39;s Subs&quot; wasn&#39;t coded as anything as shown in the code chunk:
+#rest_locations %&gt;%
+#  group_by(restaurant) %&gt;%
+#  filter(is.na(rest_type))
+
+menustat_df %&gt;%
+  summarise(across(everything(), ~sum(is.na(.x)))) %&gt;%
+  knitr::kable() #no more NA&#39;s for variables we are using</code></pre>
+<table style="width:100%;">
+<colgroup>
+<col width="1%" />
+<col width="1%" />
+<col width="0%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="2%" />
+<col width="2%" />
+<col width="3%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="0%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="1%" />
+<col width="2%" />
+<col width="2%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="2%" />
+<col width="1%" />
+<col width="2%" />
+<col width="2%" />
+<col width="1%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="2%" />
+<col width="1%" />
+<col width="1%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="right">restaurant</th>
+<th align="right">rest_type</th>
+<th align="right">year</th>
+<th align="right">menu_item_id</th>
+<th align="right">food_category</th>
+<th align="right">item_name</th>
+<th align="right">item_description</th>
+<th align="right">serving_size</th>
+<th align="right">serving_size_unit</th>
+<th align="right">serving_size_text</th>
+<th align="right">serving_size_household</th>
+<th align="right">calories</th>
+<th align="right">total_fat</th>
+<th align="right">saturated_fat</th>
+<th align="right">trans_fat</th>
+<th align="right">cholesterol</th>
+<th align="right">sodium</th>
+<th align="right">potassium</th>
+<th align="right">carbohydrates</th>
+<th align="right">protein</th>
+<th align="right">sugar</th>
+<th align="right">dietary_fiber</th>
+<th align="right">calories_100g</th>
+<th align="right">total_fat_100g</th>
+<th align="right">saturated_fat_100g</th>
+<th align="right">trans_fat_100g</th>
+<th align="right">cholesterol_100g</th>
+<th align="right">sodium_100g</th>
+<th align="right">potassium_100g</th>
+<th align="right">carbohydrates_100g</th>
+<th align="right">protein_100g</th>
+<th align="right">sugar_100g</th>
+<th align="right">dietary_fiber_100g</th>
+<th align="right">calories_text</th>
+<th align="right">total_fat_text</th>
+<th align="right">saturated_fat_text</th>
+<th align="right">trans_fat_text</th>
+<th align="right">cholesterol_text</th>
+<th align="right">sodium_text</th>
+<th align="right">potassium_text</th>
+<th align="right">carbohydrates_text</th>
+<th align="right">protein_text</th>
+<th align="right">sugar_text</th>
+<th align="right">dietary_fiber_text</th>
+<th align="right">kids_meal</th>
+<th align="right">limited_time_offer</th>
+<th align="right">regional</th>
+<th align="right">shareable</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">98236</td>
+<td align="right">98525</td>
+<td align="right">216991</td>
+<td align="right">174377</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">1476</td>
+<td align="right">12139</td>
+<td align="right">2611</td>
+<td align="right">0</td>
+<td align="right">211033</td>
+<td align="right">0</td>
+<td align="right">1373</td>
+<td align="right">0</td>
+<td align="right">4425</td>
+<td align="right">107694</td>
+<td align="right">107685</td>
+<td align="right">108177</td>
+<td align="right">112992</td>
+<td align="right">108594</td>
+<td align="right">107692</td>
+<td align="right">215289</td>
+<td align="right">107701</td>
+<td align="right">108155</td>
+<td align="right">107743</td>
+<td align="right">108753</td>
+<td align="right">216475</td>
+<td align="right">216104</td>
+<td align="right">216208</td>
+<td align="right">216236</td>
+<td align="right">216746</td>
+<td align="right">217334</td>
+<td align="right">215999</td>
+<td align="right">215939</td>
+<td align="right">215209</td>
+<td align="right">216925</td>
+<td align="right">214358</td>
+<td align="right">23250</td>
+<td align="right">23249</td>
+<td align="right">22996</td>
+<td align="right">20672</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>###frequency visualizations stratified by restaurant type
+#fast food calorie distribution
+ff_cal = menustat_df %&gt;%
+  select(rest_type, calories) %&gt;%
+  filter(rest_type == &quot;fast food&quot;) %&gt;%
+  ggplot(aes(x = calories)) +
+  geom_histogram(fill = &quot;light blue&quot;, color = &quot;black&quot;) + 
+labs(
+    x = &quot;Calories per Item&quot;,
+    y = &quot;Frequency&quot;, 
+    title = &quot;Fast food restaurants&quot;
+  ) 
+
+#sit-down calorie distribution
+sd_cal = menustat_df %&gt;%
+  select(rest_type, calories) %&gt;%
+  filter(rest_type == &quot;sit-down&quot;) %&gt;%
+  ggplot(aes(x = calories)) +
+  geom_histogram(fill = &quot;red&quot;, color = &quot;black&quot;)+ 
+labs(
+    x = &quot;Calories per Item&quot;,
+    y = &quot;Frequency&quot;,
+    title = &quot;Sit-down restaurants&quot;
+  ) 
+
+#bev_des calorie distribution
+bevdes_cal = menustat_df %&gt;%
+  select(rest_type, calories) %&gt;%
+  filter(rest_type == &quot;beverages_dessert&quot;) %&gt;%
+  ggplot(aes(x = calories)) +
+  geom_histogram(fill = &quot;yellow&quot;, color = &quot;black&quot;) + 
+labs(
+    x = &quot;Calories per Item&quot;,
+    y = &quot;Frequency&quot;, 
+    title = &quot;Beverages and dessert shops&quot;
+  ) #has more spread in its mean
+
+#convenience calorie distribution
+conv_cal = menustat_df %&gt;%
+  select(rest_type, calories) %&gt;%
+  filter(rest_type == &quot;convenience&quot;) %&gt;%
+  ggplot(aes(x = calories)) +
+  geom_histogram(fill = &quot;green&quot;, color = &quot;black&quot;)+ 
+labs(
+    x = &quot;Calories per Item&quot;,
+    y = &quot;Frequency&quot;,
+    title = &quot;Convenience stores&quot;
+  ) 
+
+#geom_vline(aes(xintercept = mean(created_df$calories)),col=&#39;red&#39;,size=2)
+
+menustat_df %&gt;%
+  select(rest_type, calories) %&gt;%
+  ggplot(aes(x = calories, color = rest_type)) +
+  geom_histogram(binwidth=30)</code></pre>
+<p><img src="statistical_analysis_files/figure-html/frequency-1.png" width="672" /></p>
+<pre class="r"><code>ff_cal + sd_cal + bevdes_cal + conv_cal</code></pre>
+<pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="statistical_analysis_files/figure-html/frequency-2.png" width="672" /></p>
+<pre class="r"><code>####calculations for calories, total_fat, sodium, carbohydrates, sugar
+##calories 
+#mean calories
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(calories), list(name = mean))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert  293.
+## 2 convenience        262.
+## 3 fast food          359.
+## 4 sit-down           472.</code></pre>
+<pre class="r"><code>#median calories
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(calories), list(name = median))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert   270
+## 2 convenience         220
+## 3 fast food           270
+## 4 sit-down            310</code></pre>
+<pre class="r"><code>##total fat
+#mean fat
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(total_fat), list(name = mean))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert  8.70
+## 2 convenience        9.48
+## 3 fast food         15.5 
+## 4 sit-down          24.6</code></pre>
+<pre class="r"><code>#median fat
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(total_fat), list(name = median))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert     6
+## 2 convenience           5
+## 3 fast food             9
+## 4 sit-down             15</code></pre>
+<pre class="r"><code>##sodium
+#mean sodium
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(sodium), list(name = mean))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert  181.
+## 2 convenience        363.
+## 3 fast food          648.
+## 4 sit-down           921.</code></pre>
+<pre class="r"><code>#median sodium
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(sodium), list(name = median))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert  125 
+## 2 convenience        160 
+## 3 fast food          333.
+## 4 sit-down           530</code></pre>
+<pre class="r"><code>##carbs
+#mean carbs
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(carbohydrates), list(name = mean))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert  47.8
+## 2 convenience        36.7
+## 3 fast food          42.9
+## 4 sit-down           42.5</code></pre>
+<pre class="r"><code>#median carbs
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(carbohydrates), list(name = median))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert    42
+## 2 convenience          32
+## 3 fast food            33
+## 4 sit-down             29</code></pre>
+<pre class="r"><code>##sugar
+#mean sugar
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(sugar), list(name = mean))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert  39.5
+## 2 convenience        25.3
+## 3 fast food          22.4
+## 4 sit-down           16.2</code></pre>
+<pre class="r"><code>#median sugar
+menustat_df %&gt;%
+  group_by(rest_type) %&gt;%
+  summarise_at(vars(sugar), list(name = median))</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##   rest_type          name
+##   &lt;chr&gt;             &lt;dbl&gt;
+## 1 beverages_dessert    34
+## 2 convenience          17
+## 3 fast food             6
+## 4 sit-down              7</code></pre>
+<pre class="r"><code>###creating new columns
+
+#menustat_df_test = menustat_df %&gt;% 
+#  group_by(rest_type, restaurant)  %&gt;%  # group by one or more variables
+#  summarise(mean_calories = mean(calories),
+#            median_calories = median(calories))  # calculate mean and median of column
+#
+#rest_locations %&gt;%
+#  group_by(zipcode, rest_type, restaurant) %&gt;%
+#  count()
+#
+#to look specifically at ny truncate the dataframe for relevant restaurant in the city
+#combined dataframe for summaries
+#tidied(1st) -&gt; summary metrics(relevant nutritional variables) -&gt; creating combined df_metrics(zipcode) -&gt;  joining on zipcode with #tidy census -&gt; regression OLS at the zipcode level
+#
+#rest_locations %&gt;%
+#  group_by(zipcode, rest_type) %&gt;%
+#summarise (count_rest = n())
+#
+##create a count for rest_type for every distinct zip then multiply the #of rest_type by associated metric
+#rest_locations %&gt;%
+#  select(restaurant, rest_type, zipcode) %&gt;%
+#  group_by(rest_type) %&gt;%
+#  
+#food environment quality ~ predictors, zipcode level mean sugar, fat etc. , median house hold income, %race, etc. </code></pre>
+</div>
+<div id="new-model-data-building" class="section level2">
+<h2>NEW Model data/ building</h2>
+<pre class="r"><code>## creates the total_rest_acs dataframe 
+
+#DATAFRAME 1:REST 
+rest_locations_new = rest_locations %&gt;%
+  group_by(zipcode, rest_type) %&gt;%
+  summarise(num_rest_type = n()) %&gt;% 
+  pivot_wider(
+    names_from = &quot;rest_type&quot;, 
+    values_from = &quot;num_rest_type&quot;
+  ) %&gt;% 
+  drop_na(zipcode) %&gt;% 
+  replace(is.na(.), 0) %&gt;% 
+  rename(fast_food = `fast food`,
+         sit_down = `sit-down`) %&gt;%
+  mutate(total = beverages_dessert + fast_food + sit_down, 
+         prop_bev = beverages_dessert/total, 
+         prop_fast = fast_food/total, 
+         prop_sit = sit_down/total, 
+         logit_sit = ifelse(sit_down &gt; 0, 1, 0),
+         logit_fast = ifelse(fast_food &gt; 10, 1, 0)) %&gt;% 
+  select(-c(total)) </code></pre>
+<pre><code>## `summarise()` has grouped output by &#39;zipcode&#39;. You can
+## override using the `.groups` argument.</code></pre>
+<pre class="r"><code>#frequency of fast food outlets within a zipcode &gt; median
+#rest_locations_new %&gt;%
+#  mutate(fast_food = as.numeric(fast_food)) %&gt;%
+#  summarise(median = median(fast_food))
+  
+
+#DATAFRAME 2: ACS
+nyc_acs = read_csv(&quot;data/nyc_acs_reg&quot;)</code></pre>
+<pre><code>## Rows: 526 Columns: 7
+## ── Column specification ─────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (7): zipcode, med_income, prop_bipoc, prop_white, prop_other, prop_femal...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>## JOIN ##
+
+total_rest_acs = left_join(rest_locations_new, nyc_acs, by = &quot;zipcode&quot;) %&gt;% 
+  drop_na()
+
+## with drop_na (taking away NAs in nyc_acs proportions) we went from 172 to 167 zipcodes </code></pre>
+<pre class="r"><code>##model lm 
+#proportion of fast food prediction
+fit.fast &lt;- lm(prop_fast ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs)
+
+#summary(fit.fast)
+fit_table_fast = fit.fast %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)
+
+#proportion of sit down prediction
+fit.sit &lt;- lm(prop_sit ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs)
+
+#summary(fit.sit)
+fit_table_sit = fit.sit %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)
+
+
+#model glm 
+#sit down
+fit.logit.sit &lt;- glm(logit_sit ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs, family = &quot;binomial&quot;)
+
+summary(fit.logit.sit)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = logit_sit ~ prop_white + prop_bipoc + prop_female + 
+##     prop_other + med_income, family = &quot;binomial&quot;, data = total_rest_acs)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.1687  -0.9108  -0.8212   1.4187   1.7267  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -8.365e+00  1.029e+01  -0.813    0.416
+## prop_white   5.412e+00  1.020e+01   0.531    0.596
+## prop_bipoc   5.323e+00  1.019e+01   0.522    0.602
+## prop_female  5.819e+00  7.309e+00   0.796    0.426
+## prop_other   4.784e+00  1.079e+01   0.444    0.657
+## med_income  -6.789e-06  6.734e-06  -1.008    0.313
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 210.21  on 166  degrees of freedom
+## Residual deviance: 207.22  on 161  degrees of freedom
+## AIC: 219.22
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>logit_table_sit = fit.logit.sit %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)
+
+#fast food
+fit.logit.fast &lt;- glm(logit_fast ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs, family = &quot;binomial&quot;)
+
+summary(fit.logit.fast)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = logit_fast ~ prop_white + prop_bipoc + prop_female + 
+##     prop_other + med_income, family = &quot;binomial&quot;, data = total_rest_acs)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.9505  -0.5701  -0.5028  -0.4386   2.2655  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -4.490e+00  1.499e+01  -0.299    0.765
+## prop_white   8.180e+00  1.467e+01   0.558    0.577
+## prop_bipoc   9.579e+00  1.461e+01   0.656    0.512
+## prop_female -1.093e+01  9.255e+00  -1.181    0.238
+## prop_other   7.743e+00  1.554e+01   0.498    0.618
+## med_income  -7.234e-07  8.419e-06  -0.086    0.932
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 133.87  on 166  degrees of freedom
+## Residual deviance: 131.09  on 161  degrees of freedom
+## AIC: 143.09
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>logit_table_fast = fit.logit.fast %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)</code></pre>
+</div>
+<div id="plots" class="section level1">
+<h1>plots</h1>
+<pre class="r"><code>##Linear regression plots: fast food 
+#female 
+fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion of Fast Food Restaurants by Proportion of Female in Population&quot;,
+    x = &quot;Proportion of Female Residents&quot;,
+    y = &quot;Proportion of Fast Food Restaurants&quot;
+  )
+## question: x is proportion female but X lab was total population? And y lab was income? we assumed the labels were wrong and changed  
+## interpretation: as female proportion increases fast food prop decreases
+
+#bipoc 
+bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion of Fast Food Restaurants by Proportion of BIPOC in Population&quot;,
+    x = &quot;Proportion of BIPOC Residents&quot;,
+    y = &quot;Proportion of Fast Food Restaurants&quot;
+  )
+## interpretation: as BIPOC proportion increases fast food prop increases
+
+#medincome
+med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion Fast Food Restaurants by Median income&quot;,
+    x = &quot;Median Income&quot;,
+    y = &quot;Proportion of Fast Food Restaurants&quot;
+  )
+## interpretation: as median income increases fast food prop SLIGHTLY decreases
+## check coefficients 
+
+##Linear regression plots: sit down
+
+#female 
+fem_sit = ggplot(total_rest_acs, aes(x = prop_female, y = prop_sit)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion of Sit-down Restaurants by Proportion of Female in Population&quot;,
+    x = &quot;Proportion of Female Residents&quot;,
+    y = &quot;Proportion of Sit-down Restaurants&quot;)
+
+
+#bipoc 
+bipoc_sit = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_sit)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion of Sit-down Restaurants by Proportion of BIPOC in Population&quot;,
+    x = &quot;Proportion of BIPOC Residents&quot;,
+    y = &quot;Proportion of Sit-down Restaurants&quot;
+  )
+
+
+#medincome
+med_in_sit = ggplot(total_rest_acs, aes(x = med_income, y = prop_sit)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion Sit-down Restaurants by Median income&quot;,
+    x = &quot;Median Income&quot;,
+    y = &quot;Proportion of Sit-down Restaurants&quot;
+  )
+
+##Logistic regression plots
+#logit sit down
+log_SIT = ggplot(total_rest_acs, aes(x= prop_female, y= logit_sit)) + 
+  geom_point() +
+  stat_smooth(method=&quot;glm&quot;, color=&quot;green&quot;, se=TRUE, method.args = list(family=binomial)) +
+labs(
+    title = &quot;Presence of Sit-down Restaurants by Proportion of Female Residents&quot;,
+    x = &quot;Proportion of Female&quot;,
+    y = &quot;Presence of Sit-Down Restaurants&quot;
+  )
+## as proportion of female residents increases the presence of sit down restaurants increases
+
+#logit fast food
+log_FF = ggplot(total_rest_acs, aes(x= prop_female, y= logit_fast)) + 
+  geom_point() +
+  stat_smooth(method=&quot;glm&quot;, color=&quot;green&quot;, se=TRUE, method.args = list(family=binomial)) +
+labs(
+    title = &quot;Presence of Fast Food Restaurants by Proportion of Female Residents&quot;,
+    x = &quot;Proportion of Female&quot;,
+    y = &quot;Presence of Fast Food Restaurants&quot;
+  )
+## as proportion of female residents increases the presence of fast food restaurants decreases
+
+##formating linear graph 
+
+med_in_ff + bipoc_ff + fem_ff + med_in_sit + bipoc_sit + fem_sit</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>## formatting log graphs 
+
+log_FF + log_SIT</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;
+## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="statistical_analysis_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
 </div>
 
 

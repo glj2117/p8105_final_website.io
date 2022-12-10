@@ -13,7 +13,7 @@
 
 <title>Data Pre-Processing/Cleaning</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -183,8 +183,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -192,9 +192,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -360,6 +367,434 @@ div.tocify {
 
 <div id="data-cleaning-and-pre-processing" class="section level2">
 <h2>### Data Cleaning and Pre-Processing</h2>
+<pre><code>## ── Attaching packages ──────────────────── tidyverse 1.3.2 ──
+## ✔ ggplot2 3.3.6      ✔ purrr   0.3.5 
+## ✔ tibble  3.1.8      ✔ dplyr   1.0.10
+## ✔ tidyr   1.2.0      ✔ stringr 1.4.1 
+## ✔ readr   2.1.2      ✔ forcats 0.5.2 
+## ── Conflicts ─────────────────────── tidyverse_conflicts() ──
+## ✖ dplyr::filter() masks stats::filter()
+## ✖ dplyr::lag()    masks stats::lag()
+## Loading required package: viridisLite
+## 
+## 
+## Attaching package: &#39;rvest&#39;
+## 
+## 
+## The following object is masked from &#39;package:readr&#39;:
+## 
+##     guess_encoding</code></pre>
+<pre><code>## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion
+
+## Warning in mask$eval_all_mutate(quo): NAs introduced by coercion</code></pre>
+<pre><code>##   restaurant                    rest_type           year     
+##  Length:217653      beverages_dessert: 25582   Min.   :2008  
+##  Class :character   convenience      : 15058   1st Qu.:2014  
+##  Mode  :character   fast food        :113741   Median :2016  
+##                     sit-down         : 63272   Mean   :2016  
+##                                                3rd Qu.:2018  
+##                                                Max.   :2020  
+##                                                              
+##  menu_item_id       food_category       item_name         item_description  
+##  Length:217653      Length:217653      Length:217653      Length:217653     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##   serving_size     serving_size_unit  serving_size_text  serving_size_household
+##  Min.   :    0.0   Length:217653      Length:217653      Length:217653         
+##  1st Qu.:   16.0   Class :character   Class :character   Class :character      
+##  Median :   32.0   Mode  :character   Mode  :character   Mode  :character      
+##  Mean   :  106.9                                                               
+##  3rd Qu.:  135.0                                                               
+##  Max.   :16743.0                                                               
+##  NA&#39;s   :98236                                                                 
+##     calories        total_fat       saturated_fat        trans_fat       
+##  Min.   :   0.0   Min.   :   0.00   Min.   :   0.000   Min.   :   0.000  
+##  1st Qu.: 130.0   1st Qu.:   0.00   1st Qu.:   0.000   1st Qu.:   0.000  
+##  Median : 270.0   Median :   9.00   Median :   3.500   Median :   0.000  
+##  Mean   : 377.3   Mean   :  16.94   Mean   :   9.465   Mean   :   0.287  
+##  3rd Qu.: 500.0   3rd Qu.:  23.00   3rd Qu.:   9.000   3rd Qu.:   0.000  
+##  Max.   :9240.0   Max.   :1478.00   Max.   :7990.000   Max.   :1710.000  
+##                                     NA&#39;s   :1476       NA&#39;s   :12139     
+##   cholesterol          sodium          potassium      carbohydrates    
+##  Min.   :   0.00   Min.   :    0.0   Min.   :   0     Min.   :   0.00  
+##  1st Qu.:   0.00   1st Qu.:   75.0   1st Qu.:  15     1st Qu.:  12.00  
+##  Median :  20.00   Median :  290.0   Median : 180     Median :  33.00  
+##  Mean   :  55.66   Mean   :  652.8   Mean   : 297     Mean   :  42.93  
+##  3rd Qu.:  65.00   3rd Qu.:  892.0   3rd Qu.: 450     3rd Qu.:  60.00  
+##  Max.   :2750.00   Max.   :29040.0   Max.   :2640     Max.   :3763.00  
+##  NA&#39;s   :2611                        NA&#39;s   :211033                    
+##     protein          sugar       dietary_fiber      calories_100g    
+##  Min.   :  0.0   Min.   :  0.0   Min.   :  -1.000   Min.   :    0.0  
+##  1st Qu.:  1.0   1st Qu.:  2.0   1st Qu.:   0.000   1st Qu.:   46.0  
+##  Median :  7.0   Median :  8.0   Median :   1.000   Median :  119.0  
+##  Mean   : 13.8   Mean   : 22.8   Mean   :   1.932   Mean   :  156.3  
+##  3rd Qu.: 18.0   3rd Qu.: 32.0   3rd Qu.:   3.000   3rd Qu.:  242.0  
+##  Max.   :679.0   Max.   :872.0   Max.   :1400.000   Max.   :15000.0  
+##  NA&#39;s   :1373                    NA&#39;s   :4425       NA&#39;s   :107694   
+##  total_fat_100g    saturated_fat_100g trans_fat_100g   cholesterol_100g 
+##  Min.   :   0.00   Min.   :  0.00     Min.   : 0.00    Min.   :   0.00  
+##  1st Qu.:   0.00   1st Qu.:  0.00     1st Qu.: 0.00    1st Qu.:   0.00  
+##  Median :   3.00   Median :  1.00     Median : 0.00    Median :   6.00  
+##  Mean   :   7.65   Mean   :  2.76     Mean   : 0.07    Mean   :  20.56  
+##  3rd Qu.:  12.00   3rd Qu.:  4.00     3rd Qu.: 0.00    3rd Qu.:  27.00  
+##  Max.   :1167.00   Max.   :572.00     Max.   :80.00    Max.   :1542.00  
+##  NA&#39;s   :107685    NA&#39;s   :108177     NA&#39;s   :112992   NA&#39;s   :108594   
+##   sodium_100g       potassium_100g   carbohydrates_100g  protein_100g   
+##  Min.   :     0.0   Min.   :  0      Min.   :   0.00    Min.   :  0.00  
+##  1st Qu.:    13.0   1st Qu.: 36      1st Qu.:   7.00    1st Qu.:  0.00  
+##  Median :    97.0   Median :125      Median :  13.00    Median :  2.00  
+##  Mean   :   304.4   Mean   :133      Mean   :  17.08    Mean   :  4.95  
+##  3rd Qu.:   500.0   3rd Qu.:195      3rd Qu.:  22.00    3rd Qu.:  8.00  
+##  Max.   :209000.0   Max.   :695      Max.   :1800.00    Max.   :667.00  
+##  NA&#39;s   :107692     NA&#39;s   :215289   NA&#39;s   :107701     NA&#39;s   :108155  
+##    sugar_100g      dietary_fiber_100g calories_text      total_fat_text    
+##  Min.   :   0.00   Min.   :  0.00     Length:217653      Length:217653     
+##  1st Qu.:   1.00   1st Qu.:  0.00     Class :character   Class :character  
+##  Median :   5.00   Median :  0.00     Mode  :character   Mode  :character  
+##  Mean   :   8.56   Mean   :  0.88                                          
+##  3rd Qu.:  12.00   3rd Qu.:  1.00                                          
+##  Max.   :1800.00   Max.   :500.00                                          
+##  NA&#39;s   :107743    NA&#39;s   :108753                                          
+##  saturated_fat_text trans_fat_text     cholesterol_text   sodium_text       
+##  Length:217653      Length:217653      Length:217653      Length:217653     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##  potassium_text     carbohydrates_text protein_text        sugar_text       
+##  Length:217653      Length:217653      Length:217653      Length:217653     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##  dietary_fiber_text  kids_meal         limited_time_offer   regional        
+##  Length:217653      Length:217653      Length:217653      Length:217653     
+##  Class :character   Class :character   Class :character   Class :character  
+##  Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+##                                                                             
+##                                                                             
+##                                                                             
+##                                                                             
+##   shareable        
+##  Length:217653     
+##  Class :character  
+##  Mode  :character  
+##                    
+##                    
+##                    
+## </code></pre>
+</div>
+<div id="restaurant-inspections-data" class="section level2">
+<h2>Restaurant inspections data</h2>
+<pre class="r"><code>restaurant_address = read_csv(&#39;data/Restaurants__rolled_up_.csv&#39;) %&gt;% 
+  janitor::clean_names() %&gt;% 
+  filter(
+    dba == &quot;Culver&#39;s&quot; | dba == &quot;SUBWAY&quot; | dba == &quot;TIM HORTONS&quot; | dba == &quot;TACO BELL&quot; | dba == &quot;ARBY&#39;S&quot; | dba == &quot;Whataburger&quot; | dba == &quot;WHITE CASTLE&quot; | dba == &quot;Bojangles&quot; | dba == &quot;BURGER KING&quot; | dba == &quot;Captain D&#39;s&quot; | dba == &quot;Carl&#39;s Jr.&quot; | dba == &quot;CHICK-FIL-A&quot; | dba == &quot;CHIPOTLE MEXICAN GRILL&quot; | dba == &quot;Church&#39;s Chicken&quot; | dba == &quot;Ci Ci&#39;s Pizza&quot; | dba == &quot;DAIRY QUEEN GRILL &amp; CHILL&quot; | dba == &quot;DEL TACO&quot; | dba == &quot;DOMINOS&quot; | dba == &quot;Einstein Bros&quot; | dba == &quot;EL POLLO LOCO&quot; | dba == &quot;HARDEE&quot; | dba == &quot;IN-N-OUT&quot; | dba == &quot;Jack in the Box&quot; | dba == &quot;Jason&#39;s Deli&quot; | dba == &quot;KFC&quot; | dba == &quot;Krystal&quot; | dba == &quot;LITTLE CAESARS&quot; | dba == &quot;Long John Silver&#39;s&quot; | dba == &quot;MCDONALD&#39;S&quot; | dba == &quot;PANDA EXPRESS&quot; | dba == &quot;PANERA BREAD&quot; | dba == &quot;PAPA JOHN&#39;S&quot; | dba == &quot;Papa Murphy&#39;s&quot; | dba == &quot;PIZZA HUT&quot; | dba == &quot;Pizza Hut&quot; | dba == &quot;POPEYES&quot; | dba == &quot;POPEYE&#39;S&quot; | dba == &quot;Quiznos&quot; | dba == &quot;SONIC&quot; | dba == &quot;WENDY&#39;S&quot; | dba == &quot;Zaxby&#39;s&quot; | dba == &quot;CHECKERS&quot; | dba == &quot;FIVE GUYS FAMOUS BURGERS AND FRIES&quot; | dba == &quot;QDOBA&quot; | dba == &quot;SBARRO&quot; | dba == &quot;AUNTIE ANNE&#39;S PRETZELS&quot; | dba == &quot;AUNTIE ANNES&quot; | dba == &quot;Firehouse Subs&quot; | dba == &quot;McAlister&#39;s Deli&quot; | dba == &quot;MOE&#39;S SOUTHWEST GRILL&quot; | dba == &quot;WINGSTOP&quot; | dba == &quot;WingStop&quot; | dba == &quot;Frisch&#39;s Big Boy&quot; | dba == &quot;POTBELLY SANDWICH&quot; | dba == &quot;FREDDY&#39;S&quot; | dba == &quot;Raising Cane&#39;s Chicken Fingers&quot; | dba == &quot;SHAKE SHACK&quot; | dba == &quot;JIMMY JOHNS&quot; | dba == &quot;JERSEY MIKE&#39;S&quot; | dba == &quot;Jersey Mike&#39;s&quot; | dba == &quot;Noodles &amp; Company&quot; | dba == &quot;Portillo&#39;s&quot; | dba == &quot;MARCO&#39;S&quot; | dba == &quot;Friendly&#39;s&quot; | dba == &quot;Romano&#39;s Macaroni Grill&quot; | dba == &quot;APPLEBEE&#39;S&quot; | dba == &quot;APPLEBEES&quot; | dba == &quot;Bob Evans&quot; | dba == &quot;BOSTON MARKET&quot; | dba == &quot;CHILI&#39;S&quot; | dba == &quot;Denny&#39;s&quot; | dba == &quot;Golden Corral&quot; | dba == &quot;O&#39;Charley&#39;s&quot; | dba == &quot;Olive Garden&quot; | dba == &quot;P.F.CHANG&#39;S&quot; | dba == &quot;RED LOBSTER&quot; | dba == &quot;Ruby Tuesday&quot; | dba == &quot;Steak &#39;N Shake&quot; | dba == &quot;CALIFORNIA PIZZA KITCHEN&quot; | dba == &quot;IHOP&quot; | dba == &quot;LONGHORN STEAKHOUSE&quot; | dba == &quot;OUTBACK STEAKHOUSE&quot; | dba == &quot;TGI FRIDAY&#39;S&quot; | dba == &quot;Carrabba&#39;s Italian Grill&quot; | dba == &quot;CHUCK E. CHEESE&#39;S&quot; | dba == &quot;On the Border&quot; | dba == &quot;PERKINS RESTAURANT &amp; BAKERY&quot; | dba == &quot;Red Robin&quot; | dba == &quot;Bonefish Grill&quot; | dba == &quot;YARD HOUSE&quot; | dba == &quot;Joe&#39;s Crab Shack&quot; | dba == &quot;BJ&#39;s Restaurant &amp; Brewhouse&quot; | dba == &quot;Famous Dave&#39;s&quot; | dba == &quot;Round Table Pizza&quot; | dba == &quot;HOOTERS&quot; | dba == &quot;THE CAPITAL GRILLE&quot; | dba == &quot;DICKEY&#39;S BARBEQUE PIT&quot; | dba == &quot;BUFFALO WILD WINGS&quot; |dba == &quot;Cheddar&#39;s Casual Café/Cheddar&#39;s Scratch Kitchen&quot; | dba == &quot;Cracker Barrel&quot; | dba == &quot;DAVE &amp; BUSTER&#39;S&quot; | dba == &quot;Logans Roadhouse&quot; | dba == &quot;THE CHEESECAKE FACTORY&quot; | dba == &quot;WAFFLE HOUSE&quot; | dba == &quot;STARBUCKS COFFEE&quot; | dba == &quot;BASKIN ROBBINS&quot; | dba == &quot;DUNKIN’&quot; | dba == &quot;JAMBA JUICE&quot; | dba == &quot;KRISPY KREME&quot; | dba == &quot;TROPICAL SMOOTHIE CAFE&quot;
+    ) %&gt;%
+  mutate(
+    rest_type = 
+      case_when(dba == &quot;Culver&#39;s&quot; | dba == &quot;SUBWAY&quot; | dba == &quot;TIM HORTONS&quot; | dba == &quot;TACO BELL&quot; | dba == &quot;ARBY&#39;S&quot; | dba == &quot;Whataburger&quot; | dba == &quot;WHITE CASTLE&quot; | dba == &quot;Bojangles&quot; | dba == &quot;BURGER KING&quot; | dba == &quot;Captain D&#39;s&quot; | dba == &quot;Carl&#39;s Jr.&quot; | dba == &quot;CHICK-FIL-A&quot; | dba == &quot;CHIPOTLE MEXICAN GRILL&quot; | dba == &quot;Church&#39;s Chicken&quot; | dba == &quot;Ci Ci&#39;s Pizza&quot; | dba == &quot;DAIRY QUEEN GRILL &amp; CHILL&quot; | dba == &quot;DEL TACO&quot; | dba == &quot;DOMINOS&quot; | dba == &quot;Einstein Bros&quot; | dba == &quot;EL POLLO LOCO&quot; | dba == &quot;HARDEE&quot; | dba == &quot;IN-N-OUT&quot; | dba == &quot;Jack in the Box&quot; | dba == &quot;Jason&#39;s Deli&quot; | dba == &quot;KFC&quot; | dba == &quot;Krystal&quot; | dba == &quot;LITTLE CAESARS&quot; | dba == &quot;Long John Silver&#39;s&quot; | dba == &quot;MCDONALD&#39;S&quot; | dba == &quot;PANDA EXPRESS&quot; | dba == &quot;PANERA BREAD&quot; | dba == &quot;PAPA JOHN&#39;S&quot; | dba == &quot;Papa Murphy&#39;s&quot; | dba == &quot;PIZZA HUT&quot; | dba == &quot;Pizza Hut&quot; | dba == &quot;POPEYES&quot; | dba == &quot;POPEYE&#39;S&quot; | dba == &quot;Quiznos&quot; | dba == &quot;SONIC&quot; | dba == &quot;WENDY&#39;S&quot; | dba == &quot;Zaxby&#39;s&quot; | dba == &quot;CHECKERS&quot; | dba == &quot;FIVE GUYS FAMOUS BURGERS AND FRIES&quot; | dba == &quot;QDOBA&quot; | dba == &quot;SBARRO&quot; | dba == &quot;AUNTIE ANNE&#39;S PRETZELS&quot; | dba == &quot;AUNTIE ANNES&quot; | dba == &quot;Firehouse Subs&quot; | dba == &quot;McAlister&#39;s Deli&quot; | dba == &quot;MOE&#39;S SOUTHWEST GRILL&quot; | dba == &quot;WINGSTOP&quot; | dba == &quot;WingStop&quot; |dba == &quot;Frisch&#39;s Big Boy&quot; | dba == &quot;POTBELLY SANDWICH&quot; | dba == &quot;FREDDY&#39;S&quot; | dba == &quot;Raising Cane&#39;s Chicken Fingers&quot; | dba == &quot;SHAKE SHACK&quot; | dba == &quot;JIMMY JOHNS&quot; | dba == &quot;JERSEY MIKE&#39;S&quot; | dba == &quot;Jersey Mike&#39;s&quot; | dba == &quot;Noodles &amp; Company&quot; | dba == &quot;Portillo&#39;s&quot; | dba == &quot;MARCO&#39;S&quot; ~ &quot;fast food&quot;, 
+                dba == &quot;Friendly&#39;s&quot; | dba == &quot;Romano&#39;s Macaroni Grill&quot; | dba == &quot;APPLEBEE&#39;S&quot; | dba == &quot;APPLEBEES&quot; | dba == &quot;Bob Evans&quot; | dba == &quot;BOSTON MARKET&quot; | dba == &quot;CHILI&#39;S&quot; | dba == &quot;Denny&#39;s&quot; | dba == &quot;Golden Corral&quot; | dba == &quot;O&#39;Charley&#39;s&quot; | dba == &quot;Olive Garden&quot; | dba == &quot;P.F.CHANG&#39;S&quot; | dba == &quot;RED LOBSTER&quot; | dba == &quot;Ruby Tuesday&quot; | dba == &quot;Steak &#39;N Shake&quot; | dba == &quot;CALIFORNIA PIZZA KITCHEN&quot; | dba == &quot;IHOP&quot; | dba == &quot;LONGHORN STEAKHOUSE&quot; | dba == &quot;OUTBACK STEAKHOUSE&quot; | dba == &quot;TGI FRIDAY&#39;S&quot; | dba == &quot;Carrabba&#39;s Italian Grill&quot; | dba == &quot;CHUCK E. CHEESE&#39;S&quot; | dba == &quot;On the Border&quot; | dba == &quot;PERKINS RESTAURANT &amp; BAKERY&quot; | dba == &quot;Red Robin&quot; | dba == &quot;Bonefish Grill&quot; | dba == &quot;YARD HOUSE&quot; | dba == &quot;Joe&#39;s Crab Shack&quot; | dba == &quot;BJ&#39;s Restaurant &amp; Brewhouse&quot; | dba == &quot;Famous Dave&#39;s&quot; | dba == &quot;Round Table Pizza&quot; | dba == &quot;HOOTERS&quot; | dba == &quot;THE CAPITAL GRILLE&quot; | dba == &quot;DICKEY&#39;S BARBEQUE PIT&quot; | dba == &quot;BUFFALO WILD WINGS&quot; |dba == &quot;Cheddar&#39;s Casual Café/Cheddar&#39;s Scratch Kitchen&quot; | dba == &quot;Cracker Barrel&quot; | dba == &quot;DAVE &amp; BUSTER&#39;S&quot; | dba == &quot;Logans Roadhouse&quot; | dba == &quot;THE CHEESECAKE FACTORY&quot; | dba == &quot;WAFFLE HOUSE&quot; ~ &quot;sit-down&quot;, 
+                dba == &quot;STARBUCKS COFFEE&quot; | dba == &quot;BASKIN ROBBINS&quot; | dba == &quot;DUNKIN’&quot; | dba == &quot;JAMBA JUICE&quot; | dba == &quot;KRISPY KREME&quot; | dba == &quot;TROPICAL SMOOTHIE CAFE&quot; ~ &quot;beverages_dessert&quot;, 
+                dba == &quot;7 Eleven&quot; | dba == &quot;Casey&#39;s General Store&quot; | dba == &quot;Sheetz&quot; | dba == &quot;Wawa&quot; ~ &quot;convenience&quot;)
+    ) %&gt;% 
+  mutate(
+    rest_type = as.factor(rest_type)) %&gt;%
+  rename(
+    &quot;restaurant&quot; = &quot;dba&quot;
+  ) %&gt;%
+  select(
+    restaurant, rest_type, boro, zipcode
+    ) %&gt;%
+  write_csv(&quot;data/restaurant_location.csv&quot;)</code></pre>
+<pre><code>## Rows: 28112 Columns: 6
+## ── Column specification ─────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (5): DBA, BORO, BUILDING, STREET, ZIPCODE
+## dbl (1): CAMIS
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+</div>
+<div id="census-data" class="section level2">
+<h2>Census Data</h2>
+<pre class="r"><code># Set API key, only need to do this once but &#39;overwrite&#39; will allow multiple
+census_api_key(&quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;, overwrite = TRUE, install = TRUE)</code></pre>
+<pre><code>## Your original .Renviron will be backed up and stored in your R HOME directory if needed.</code></pre>
+<pre><code>## Your API key has been stored in your .Renviron and can be accessed by Sys.getenv(&quot;CENSUS_API_KEY&quot;). 
+## To use now, restart R or run `readRenviron(&quot;~/.Renviron&quot;)`</code></pre>
+<pre><code>## [1] &quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;</code></pre>
+<pre class="r"><code># run to use 
+readRenviron(&quot;~/.Renviron&quot;)
+#calls API key 
+Sys.getenv(&quot;CENSUS_API_KEY&quot;)</code></pre>
+<pre><code>## [1] &quot;0b1055607d9ae137c0e00de8e22ed531d7c91a44&quot;</code></pre>
+<pre class="r"><code># Call ist of all variables for ACS
+vars_list = load_variables( 
+                          year = 2016, 
+                           dataset = &quot;acs5&quot;, 
+                           cache = TRUE) %&gt;% 
+
+            view()
+
+# B19013_001 median household income
+# B01003_001 total population
+# B02001_001 total population (for race)
+# B02001_002 white alone
+# B02001_003 black alone
+# B02001_004 american indian/alaskan native 
+# B02001_005 asian alone
+# B02001_006 native hawaiian and other pacific islander 
+# B02001_007 Some other race alone
+# B01001_026 female sex 
+# B01001_002 male sex 
+# PWGTP weight variable 
+
+# Get data 2015-2019 for NYC by ACS &amp; output in wide format 
+nyc_acs_data &lt;- get_acs(state = &quot;ny&quot;,
+               geography = &quot;zcta&quot;,
+               year = 2019,
+               variables = c(med_income = &quot;B19013_001&quot;,
+                             total_pop = &quot;B01003_001&quot;, 
+                             race_total = &quot;B02001_001&quot;, 
+                             white = &quot;B02001_002&quot;, 
+                             black_aa = &quot;B02001_003&quot;, 
+                             ai_an = &quot;B02001_004&quot;, 
+                             asain = &quot;B02001_005&quot;, 
+                             hawaiian_pi = &quot;B02001_006&quot;, 
+                             other = &quot;B02001_007&quot;, 
+                              female = &quot;B01001_026&quot;, 
+                               male = &quot;B01001_002&quot;
+                             ),
+               survey = &quot;acs5&quot;) %&gt;% 
+      filter(str_detect(GEOID, &quot;^10|^11&quot;))  %&gt;% 
+  select(-moe) %&gt;% 
+    pivot_wider(
+      names_from = &quot;variable&quot;, 
+      values_from = &quot;estimate&quot;
+    )</code></pre>
+<pre><code>## Getting data from the 2015-2019 5-year ACS</code></pre>
+<pre class="r"><code>#data manipulation to make proportions &amp; data export 
+nyc_acs_data_prop = nyc_acs_data %&gt;% 
+  mutate(prop_bipoc = (black_aa + ai_an + asain + hawaiian_pi)/total_pop, 
+         prop_white = white/total_pop, 
+         prop_other = other/total_pop, 
+         prop_female = female/total_pop, 
+         prop_male = male/total_pop
+) %&gt;% 
+  select(-c(black_aa, ai_an, asain, hawaiian_pi, total_pop, race_total, white, other, female, male, NAME)) %&gt;% 
+  rename(zipcode = GEOID) %&gt;% 
+  write_csv(&quot;data/nyc_acs_reg&quot;)</code></pre>
+<p><strong>ACS individual year pull, no function</strong> ### DO NOT
+NEED THIS CODE CHUNK ###</p>
+<pre class="r"><code>library(tidyverse)
+library(tidycensus)
+library(sf)</code></pre>
+<pre><code>## Linking to GEOS 3.10.2, GDAL 3.4.2, PROJ 8.2.1; sf_use_s2() is TRUE</code></pre>
+<pre class="r"><code>library(scales)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:viridis&#39;:
+## 
+##     viridis_pal</code></pre>
+<pre><code>## The following object is masked from &#39;package:purrr&#39;:
+## 
+##     discard</code></pre>
+<pre><code>## The following object is masked from &#39;package:readr&#39;:
+## 
+##     col_factor</code></pre>
+<pre class="r"><code>#2016
+acs_ny_2016 &lt;- get_acs( state = &quot;ny&quot;,
+  geography = &quot;zcta&quot;, 
+  variables = c(med_income = &quot;B19013_001&quot;,
+                total_pop = &quot;B01003_001&quot;, 
+                race_total = &quot;B02001_001&quot;, 
+                white = &quot;B02001_002&quot;, 
+                black_aa = &quot;B02001_003&quot;, 
+                ai_an = &quot;B02001_004&quot;, 
+                asian = &quot;B02001_005&quot;, 
+                hawaiian_pi = &quot;B02001_006&quot;, 
+                other = &quot;B02001_007&quot;, 
+                female = &quot;B01001_026&quot;, 
+                male = &quot;B01001_002&quot;
+                ),               
+  survey = &quot;acs5&quot;, 
+  year = 2016) %&gt;% 
+filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
+  tibble::add_column(year = 2016)</code></pre>
+<pre><code>## Getting data from the 2012-2016 5-year ACS</code></pre>
+<pre class="r"><code>#2017
+acs_ny_2017 &lt;- get_acs( state = &quot;ny&quot;,
+  geography = &quot;zcta&quot;, 
+  variables = c(med_income = &quot;B19013_001&quot;,
+                total_pop = &quot;B01003_001&quot;, 
+                race_total = &quot;B02001_001&quot;, 
+                white = &quot;B02001_002&quot;, 
+                black_aa = &quot;B02001_003&quot;, 
+                ai_an = &quot;B02001_004&quot;, 
+                asian = &quot;B02001_005&quot;, 
+                hawaiian_pi = &quot;B02001_006&quot;, 
+                other = &quot;B02001_007&quot;,
+                female = &quot;B01001_026&quot;, 
+                male = &quot;B01001_002&quot;),               
+  survey = &quot;acs5&quot;, 
+  year = 2017) %&gt;% 
+filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
+  tibble::add_column(year = 2017)</code></pre>
+<pre><code>## Getting data from the 2013-2017 5-year ACS</code></pre>
+<pre class="r"><code>#2018
+acs_ny_2018 &lt;- get_acs( state = &quot;ny&quot;,
+  geography = &quot;zcta&quot;, 
+  variables = c(med_income = &quot;B19013_001&quot;,
+                total_pop = &quot;B01003_001&quot;, 
+                race_total = &quot;B02001_001&quot;, 
+                white = &quot;B02001_002&quot;, 
+                black_aa = &quot;B02001_003&quot;, 
+                ai_an = &quot;B02001_004&quot;, 
+                asian = &quot;B02001_005&quot;, 
+                hawaiian_pi = &quot;B02001_006&quot;, 
+                other = &quot;B02001_007&quot;,
+                female = &quot;B01001_026&quot;, 
+                male = &quot;B01001_002&quot;
+                ),               
+  survey = &quot;acs5&quot;, 
+  year = 2018) %&gt;% 
+filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
+  tibble::add_column(year = 2018)</code></pre>
+<pre><code>## Getting data from the 2014-2018 5-year ACS</code></pre>
+<pre class="r"><code>#2019
+acs_ny_2019 &lt;- get_acs( state = &quot;ny&quot;,
+  geography = &quot;zcta&quot;, 
+  variables = c(med_income = &quot;B19013_001&quot;,
+                total_pop = &quot;B01003_001&quot;, 
+                race_total = &quot;B02001_001&quot;, 
+                white = &quot;B02001_002&quot;, 
+                black_aa = &quot;B02001_003&quot;, 
+                ai_an = &quot;B02001_004&quot;, 
+                asian = &quot;B02001_005&quot;, 
+                hawaiian_pi = &quot;B02001_006&quot;, 
+                other = &quot;B02001_007&quot;,
+                female = &quot;B01001_026&quot;, 
+                male = &quot;B01001_002&quot;
+                ),               
+  survey = &quot;acs5&quot;, 
+  year = 2019) %&gt;% 
+filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
+  tibble::add_column(year = 2019)</code></pre>
+<pre><code>## Getting data from the 2015-2019 5-year ACS</code></pre>
+<pre class="r"><code>#2020
+acs_ny_2020 &lt;- get_acs(
+  geography = &quot;zcta&quot;, 
+  variables = c(med_income = &quot;B19013_001&quot;,
+                total_pop = &quot;B01003_001&quot;, 
+                race_total = &quot;B02001_001&quot;, 
+                white = &quot;B02001_002&quot;, 
+                black_aa = &quot;B02001_003&quot;, 
+                ai_an = &quot;B02001_004&quot;, 
+                asian = &quot;B02001_005&quot;, 
+                hawaiian_pi = &quot;B02001_006&quot;, 
+                other = &quot;B02001_007&quot;,
+                female = &quot;B01001_026&quot;, 
+                male = &quot;B01001_002&quot;
+                ),               
+  survey = &quot;acs5&quot;, 
+  year = 2020) %&gt;% 
+filter(str_detect(GEOID, &quot;^10|^11&quot;)) %&gt;%
+  tibble::add_column(year = 2020)</code></pre>
+<pre><code>## Getting data from the 2016-2020 5-year ACS</code></pre>
+<pre class="r"><code>#acs_ny_comb &lt;- bind_rows(acs_ny_2016, acs_ny_2017, acs_ny_2018, acs_ny_2019, acs_ny_2020) %&gt;% #there are 254 zctas with estimate NA&#39;s
+  #janitor::clean_names() %&gt;%
+  #write_csv(&quot;data/acs_ny_combined.csv&quot;)
+
+# drop_na(estimate) #if we want to drop the 254 NA&#39;s but check what the mapping looks like
+
+#acs_ny_comb %&gt;%
+#  summarise(across(everything(), ~sum(is.na(.x)))) %&gt;%
+#  knitr::kable()</code></pre>
+<p><strong>ACS multi year pull through <code>map_dfr</code>
+function</strong></p>
+<pre class="r"><code>#years interested
+##years &lt;- lst(2016, 2017, 2018, 2019, 2020) 
+#zctas
+##my_zcta &lt;- c(&quot;^ZCTA5 36&quot;)
+#variables
+##my_vars &lt;- c(med_income = &quot;B19013_001&quot;,
+##             total_pop = &quot;B01003_001&quot;, 
+##             race_total = &quot;B02001_001&quot;, 
+##             white = &quot;B02001_002&quot;, 
+##             black_aa = &quot;B02001_003&quot;, 
+##             ai_an = &quot;B02001_004&quot;, 
+##             asian = &quot;B02001_005&quot;, 
+##             hawaiian_pi = &quot;B02001_006&quot;, 
+##             other = &quot;B02001_007&quot;
+##             )
+##
+##ny_acs &lt;- map_dfr(
+##  years,
+##  ~ get_acs(
+##      geography = &quot;zcta&quot;, #idk why there is an error here after designating state and county as NULL
+##      state = NULL,
+##      county = NULL,
+##      variables = my_vars,
+##      zcta = my_zcta,
+##      year = .x,
+##      survey = &quot;acs5&quot;
+##      ),
+##  .id = &quot;year&quot;  # when combining results, add id var (name of list item)
+##  ) %&gt;%
+##  
+##  #arrange(variable, NAME) %&gt;% 
+##  print()</code></pre>
 </div>
 
 

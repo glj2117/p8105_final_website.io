@@ -13,7 +13,7 @@
 
 <title>Project Report</title>
 
-<script src="site_libs/header-attrs-2.17/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
@@ -183,8 +183,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "\e259";
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -192,9 +192,16 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "\e258";
-  font-family: 'Glyphicons Halflings';
+  content: "&#xe258;";
   border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -358,6 +365,31 @@ div.tocify {
 </div>
 
 
+<pre><code>## Warning: One or more parsing issues, see `problems()` for details</code></pre>
+<pre><code>## Rows: 217653 Columns: 48
+## ── Column specification ─────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (18): restaurant, rest_type, food_category, item_name, item_description,...
+## dbl (30): year, menu_item_id, serving_size, calories, total_fat, saturated_f...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## Rows: 1144 Columns: 4
+## ── Column specification ─────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (3): restaurant, rest_type, boro
+## dbl (1): zipcode
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+## `summarise()` has grouped output by &#39;zipcode&#39;. You can override using the `.groups` argument.
+## Rows: 526 Columns: 7
+## ── Column specification ─────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (7): zipcode, med_income, prop_bipoc, prop_white, prop_other, prop_femal...
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <div id="motivation" class="section level2">
 <h2>Motivation</h2>
 <p>The overarching goal of this project was to analyze nutritional data
@@ -520,32 +552,142 @@ level). We hypothesize that there are differential proportional declines
 by racial category and household income in correspondence with having a
 higher fast food restaurant occurrence proportional to any other type of
 restaurant.</p>
-<p>The hypothesis of these models was to see how the identified
-sociodemographic variables would impact the presence of a restaurant
-type throughout zip codes in NYC. To perform these analyses we had to
-further modify the restaurant location dataframe and create proportions
-of restaurant type for each zip code. We also mutated a factored binary
-variable for restaurant type by zip code with 1 representing the
-restaurant type is present and 0 representing the restaurant type was
-absent. This manipulated restaurant type dataframe was joined with the
-ACS dataframe by zip code to create a total dataframe with all variables
-needed for analysis.</p>
-<p>Then each model used the same set of predictors which included
-proportion of the population that identifies as white, proportion of the
-population that identifies in a BIPOC racial category, proportion of the
-population that identifies as ‘other’, proportion of the population that
-identifies with the biological sex female, and the median household
-income. The first linear model utilized OLS regression to look at the
-outcome, proportion of fast food restaurants, based on the described
-predictors. The second model incorporated a binary logistic regression
-to look at the outcome of a factor variable which indicated the presence
-or absence of a fast food restaurant. The method used for both the
-linear and logistic models was repeated for the outcome of sit down
-restaurants which was represented as a proportion and binary factor
-variable respectively for each model type. The linear fit for the
-predictors female, BIPOC and median income were graphed for each of the
-four models described above to further illustrate the relationships
-within the models.</p>
+<pre class="r"><code>##Linear regression plots: fast food 
+#female 
+fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion of Fast Food Restaurants by Proportion of Female in Population&quot;,
+    x = &quot;Proportion of Female Residents&quot;,
+    y = &quot;Proportion of Fast Food Restaurants&quot;
+  )</code></pre>
+</div>
+<div
+id="interpretation-as-female-proportion-increases-fast-food-prop-decreases"
+class="section level2">
+<h2>Interpretation: as female proportion increases fast food prop
+decreases</h2>
+<p>#bipoc</p>
+<pre class="r"><code>bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion of Fast Food Restaurants by Proportion of BIPOC in Population&quot;,
+    x = &quot;Proportion of BIPOC Residents&quot;,
+    y = &quot;Proportion of Fast Food Restaurants&quot;
+  )</code></pre>
+</div>
+<div
+id="interpretation-as-bipoc-proportion-increases-fast-food-prop-increases"
+class="section level2">
+<h2>interpretation: as BIPOC proportion increases fast food prop
+increases</h2>
+<p>#medincome</p>
+<pre class="r"><code>med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
+  labs(
+    title = &quot;Proportion Fast Food Restaurants by Median income&quot;,
+    x = &quot;Median Income&quot;,
+    y = &quot;Proportion of Fast Food Restaurants&quot;
+  )</code></pre>
+</div>
+<div
+id="interpretation-as-median-income-increases-fast-food-prop-slightly-decreases"
+class="section level2">
+<h2>Interpretation: as median income increases fast food prop SLIGHTLY
+decreases</h2>
+<pre><code>
+The hypothesis of these models was to see how the identified sociodemographic variables would impact the presence of a restaurant type throughout zip codes in NYC. To perform these analyses we had to further modify the restaurant location dataframe and create proportions of restaurant type for each zip code. We also mutated a factored binary variable for restaurant type by zip code with 1 representing the restaurant type is present and 0 representing the restaurant type was absent. This manipulated restaurant type dataframe was joined with the ACS dataframe by zip code to create a total dataframe with all variables needed for analysis. 
+
+Then each model used the same set of predictors which included proportion of the population that identifies as white, proportion of the population that identifies in a BIPOC racial category, proportion of the population that identifies as ‘other’, proportion of the population that identifies with the biological sex female, and the median household income. The first linear model utilized OLS regression to look at the outcome, proportion of fast food restaurants, based on the described predictors. The second model incorporated a binary logistic regression to look at the outcome of a factor variable which indicated the presence or absence of a fast food restaurant. The method used for both the linear and logistic models was repeated for the outcome of sit down restaurants which was represented as a proportion and binary factor variable respectively for each model type. The linear fit for the predictors female, BIPOC and median income were graphed for each of the four models described above to further illustrate the relationships within the models. 
+
+```r
+##model lm 
+#proportion of fast food prediction
+fit.fast &lt;- lm(prop_fast ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs)
+
+#summary(fit.fast)
+fit_table_fast = fit.fast %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)
+
+#proportion of sit down prediction
+fit.sit &lt;- lm(prop_sit ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs)
+
+#summary(fit.sit)
+fit_table_sit = fit.sit %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)
+
+
+#model glm 
+#sit down
+fit.logit.sit &lt;- glm(logit_sit ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs, family = &quot;binomial&quot;)
+
+summary(fit.logit.sit)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = logit_sit ~ prop_white + prop_bipoc + prop_female + 
+##     prop_other + med_income, family = &quot;binomial&quot;, data = total_rest_acs)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -1.1687  -0.9108  -0.8212   1.4187   1.7267  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -8.365e+00  1.029e+01  -0.813    0.416
+## prop_white   5.412e+00  1.020e+01   0.531    0.596
+## prop_bipoc   5.323e+00  1.019e+01   0.522    0.602
+## prop_female  5.819e+00  7.309e+00   0.796    0.426
+## prop_other   4.784e+00  1.079e+01   0.444    0.657
+## med_income  -6.789e-06  6.734e-06  -1.008    0.313
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 210.21  on 166  degrees of freedom
+## Residual deviance: 207.22  on 161  degrees of freedom
+## AIC: 219.22
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>logit_table_sit = fit.logit.sit %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)
+
+#fast food
+fit.logit.fast &lt;- glm(logit_fast ~ prop_white + prop_bipoc + prop_female + prop_other + med_income, data = total_rest_acs, family = &quot;binomial&quot;)
+
+summary(fit.logit.fast)</code></pre>
+<pre><code>## 
+## Call:
+## glm(formula = logit_fast ~ prop_white + prop_bipoc + prop_female + 
+##     prop_other + med_income, family = &quot;binomial&quot;, data = total_rest_acs)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -0.9505  -0.5701  -0.5028  -0.4386   2.2655  
+## 
+## Coefficients:
+##               Estimate Std. Error z value Pr(&gt;|z|)
+## (Intercept) -4.490e+00  1.499e+01  -0.299    0.765
+## prop_white   8.180e+00  1.467e+01   0.558    0.577
+## prop_bipoc   9.579e+00  1.461e+01   0.656    0.512
+## prop_female -1.093e+01  9.255e+00  -1.181    0.238
+## prop_other   7.743e+00  1.554e+01   0.498    0.618
+## med_income  -7.234e-07  8.419e-06  -0.086    0.932
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 133.87  on 166  degrees of freedom
+## Residual deviance: 131.09  on 161  degrees of freedom
+## AIC: 143.09
+## 
+## Number of Fisher Scoring iterations: 4</code></pre>
+<pre class="r"><code>logit_table_fast = fit.logit.fast %&gt;% 
+  broom::tidy() %&gt;% 
+    knitr::kable(digits = 3)</code></pre>
 </div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
