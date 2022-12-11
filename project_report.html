@@ -464,29 +464,29 @@ were present in a zip code. However, in the case of
 codes so to allow our logit model to converge, we used the median number
 of fast-food restaurants found across all zip codes as a condition to
 separate high and low prevalence (<code>fast_food</code> &gt; 10).</p>
-<p>[American Community Survey (ACS) mean income, demographic and housing
-estimate data] (<a
-href="https://data.census.gov/cedsci/table?q=population%20demographics%20income&amp;g=0400000US36%248600000&amp;tid=ACSST5Y2020.S1902"
-class="uri">https://data.census.gov/cedsci/table?q=population%20demographics%20income&amp;g=0400000US36%248600000&amp;tid=ACSST5Y2020.S1902</a>)
-The American Community Survey (ACS) provides annual sampling data that
-is based on approximately 3 million households across the United States.
-We used 5-year community survey estimates to obtain sociodemographic
-data at the zip code tabulation area (ZCTA) level for New York, NY. ACS
-data was obtained using a unique Census API Key and imported using
-<code>tidycensus</code> package version 1.3. Before loading 5-year ACS
-estimates, we specified New York state and at the ZCTA geography level
-for the years 2015 to 2019. We identified eleven variable codes that
-corresponded with sociodemographic variables of interest and were
-available across all years. We included sociodemographic variables such
-as median household income, total population (continuous), race
-(categorical), and sex (binary). For race, we created a summary metric
-for non-White, non-Other racial categories that summed counts for Black,
-Asian, American Indian/Alaskan Native, and Hawaiian/Pacific Islander
-later renamed <code>bipoc</code> (black, indigenous, people of color) as
-a measure to adjust for the low values observed in some categories. The
-imported data frame from <code>tidycensus</code> was manipulated into a
-wide dataformat and further used to mutate proportions of race and
-biological sex by ZCTA.</p>
+<p><a
+href="https://data.census.gov/cedsci/table?q=population%20demographics%20income&amp;g=0400000US36%248600000&amp;tid=ACSST5Y2020.S1902">American
+Community Survey (ACS) mean income, demographic and housing estimate
+data</a> The American Community Survey (ACS) provides annual sampling
+data that is based on approximately 3 million households across the
+United States. We used 5-year community survey estimates to obtain
+sociodemographic data at the zip code tabulation area (ZCTA) level for
+New York, NY. ACS data was obtained using a unique Census API Key and
+imported using <code>tidycensus</code> package version 1.3. Before
+loading 5-year ACS estimates, we specified New York state and at the
+ZCTA geography level for the years 2015 to 2019. We identified eleven
+variable codes that corresponded with sociodemographic variables of
+interest and were available across all years. We included
+sociodemographic variables such as median household income, total
+population (continuous), race (categorical), and sex (binary). For race,
+we created a summary metric for non-White, non-Other racial categories
+that summed counts for Black, Asian, American Indian/Alaskan Native, and
+Hawaiian/Pacific Islander later renamed <code>bipoc</code> (black,
+indigenous, people of color) as a measure to adjust for the low values
+observed in some categories. The imported data frame from
+<code>tidycensus</code> was manipulated into a wide dataformat and
+further used to mutate proportions of race and biological sex by
+ZCTA.</p>
 </div>
 <div id="exploratory-analysis" class="section level2">
 <h2>Exploratory Analysis</h2>
