@@ -548,6 +548,9 @@ variable, respectively, for each model type. The linear fit for the
 predictors female, BIPOC, and median income were graphed for each of the
 four models described above to further illustrate the relationships
 within the models.</p>
+</div>
+<div id="females" class="section level1">
+<h1>Females</h1>
 <pre class="r"><code>##Linear regression plots: fast food 
 #female 
 fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
@@ -560,10 +563,16 @@ fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
   )
 
 fem_ff</code></pre>
-<p><img src="project_report_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-## Interpretation: as female proportion increases fast food prop
-decreases</p>
-<p>#bipoc</p>
+<p><img src="project_report_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>Linear regression model plot that illustrates the sociodemographic
+covariate proportion of females (x) residing within a zip code against
+the proportion of fast food restaurants (y). There is an inverse
+relationship as we move across the x distribution where the proportion
+of women increases within a zip code there is a corresponding decrease
+in the proportion of fast food restaurants.</p>
+</div>
+<div id="bipoc" class="section level1">
+<h1>BIPOC</h1>
 <pre class="r"><code>bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
   geom_point() +
   geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
@@ -574,10 +583,16 @@ decreases</p>
   )
 
 bipoc_ff</code></pre>
-<p><img src="project_report_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-## interpretation: as BIPOC proportion increases fast food prop
-increases</p>
-<p>#medincome</p>
+<p><img src="project_report_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>Linear regression model plot that illustrates the sociodemographic
+covariate proportion of BIPOC (x) residing within a zip code against the
+proportion of fast food restaurants (y). There is a non-significant
+marginal positive relationship as we move across the x distribution
+where the proportion of BIPOC increases within a zip code there is a
+corresponding increase in the proportion of fast food restaurants</p>
+</div>
+<div id="median-income" class="section level1">
+<h1>Median Income</h1>
 <pre class="r"><code>med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
   geom_point() +
   geom_smooth(method = &quot;lm&quot;, col = &quot;red&quot;) +
@@ -588,9 +603,13 @@ increases</p>
   )
 
 med_in_ff</code></pre>
-<p><img src="project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" />
-## Interpretation: as median income increases fast food prop SLIGHTLY
-decreases</p>
+<p><img src="project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Linear regression model plot that illustrates the sociodemographic
+covariate median household income per ZCTA (x) against the proportion of
+fast food restaurants (y). There is a non-significant marginal inverse
+relationship as we move across the x distribution where median household
+income per ZCTA increases within a zip code there is a corresponding
+decrease in the proportion of fast food restaurants.</p>
 <p>The hypothesis of these models was to see how the identified
 sociodemographic variables would impact the presence of a restaurant
 type throughout zip codes in NYC. To perform these analyses we had to
@@ -701,7 +720,6 @@ summary(fit.logit.fast)</code></pre>
 <pre class="r"><code>logit_table_fast = fit.logit.fast %&gt;% 
   broom::tidy() %&gt;% 
     knitr::kable(digits = 3)</code></pre>
-</div>
 <div id="discussion" class="section level2">
 <h2>Discussion</h2>
 <p>The distribution of calories remained roughly the same over all
@@ -797,6 +815,7 @@ Preventive Medicine. 2009;36(1):74-81.e10. <a
 href="doi:10.1016/j.amepre.2008.09.025"
 class="uri">doi:10.1016/j.amepre.2008.09.025</a></li>
 </ol>
+</div>
 </div>
 
 
