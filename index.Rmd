@@ -21,10 +21,11 @@ output:
 ---
 ![](images/NYC_Downtown_Manhattan_Skyline_seen_from_Paulus_Hook_2019-12-20_IMG_7347_FRD_(cropped).jpg)
 
-## Screencast
+## Screencast link
 [Screencast](https://youtu.be/e6ylMwhOCwU)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/e6ylMwhOCwU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+## Screencast embed
+<iframe width="560" height="315" src="https://www.youtube.com/embed/e6ylMwhOCwU" frameborder="0" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## GitHub Repo Link
 [GitHub Repo](https://github.com/glj2117/p8105_final_website.io)
