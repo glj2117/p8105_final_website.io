@@ -7,7 +7,7 @@ output:
     theme : cosmo
 ---
 
-### Data Cleaning and Pre-Processing
+Data Cleaning and Pre-Processing
 ---
 ```{r load and tidy data, echo = FALSE, warning = FALSE, message = FALSE}
 library(tidyverse)
