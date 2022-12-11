@@ -44,11 +44,6 @@ rest_locations_new = rest_locations %>%
          logit_sit = ifelse(sit_down > 0, 1, 0),
          logit_fast = ifelse(fast_food > 10, 1, 0)) %>% 
   select(-c(total)) 
-
-#frequency of fast food outlets within a zipcode > median
-#rest_locations_new %>%
-#  mutate(fast_food = as.numeric(fast_food)) %>%
-#  summarise(median = median(fast_food))
   
 
 #DATAFRAME 2: ACS
@@ -107,6 +102,7 @@ We evaluated the relationship between the proportion of a sit-down or fast-food 
 
 For each model, we used the same set of sociodemographic predictors, which included the proportion of the population that identifies as white, the proportion of the population that identifies in a BIPOC racial category, the proportion of the population that identifies as ‘other’, the proportion of the population that identifies with the biological sex female, and the median household income. The first linear model utilized OLS regression to evaluate the outcome, and proportion of fast-food restaurants, based on the described predictors. The second model incorporated a binary outcome using logistic regression to evaluate the outcome of a factor variable that indicated the presence or absence of a fast-food restaurant. The method used for both the linear and logistic models was repeated for the outcome of sit-down restaurants, which was represented as a proportion and binary factor variable, respectively, for each model type. The linear fit for the predictors female, BIPOC, and median income were graphed for each of the four models described above to further illustrate the relationships within the models.
 
+# Females
 ```{r, warning = FALSE, message = FALSE}
 
 ##Linear regression plots: fast food 
@@ -122,9 +118,10 @@ fem_ff = ggplot(total_rest_acs, aes(x = prop_female, y = prop_fast)) +
 
 fem_ff
 ```
-## Interpretation: as female proportion increases fast food prop decreases
 
-#bipoc 
+Linear regression model plot that illustrates the sociodemographic covariate proportion of females (x) residing within a zip code against the proportion of fast food restaurants (y). There is an inverse relationship as we move across the x distribution where the proportion of women increases within a zip code there is a corresponding decrease in the proportion of fast food restaurants.
+
+# BIPOC 
 ```{r, warning = FALSE, message = FALSE}
 bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
   geom_point() +
@@ -137,9 +134,10 @@ bipoc_ff = ggplot(total_rest_acs, aes(x = prop_bipoc, y = prop_fast)) +
 
 bipoc_ff
 ```
-## interpretation: as BIPOC proportion increases fast food prop increases
 
-#medincome
+Linear regression model plot that illustrates the sociodemographic covariate proportion of BIPOC (x) residing within a zip code against the proportion of fast food restaurants (y). There is a non-significant marginal positive relationship as we move across the x distribution where the proportion of BIPOC increases within a zip code there is a corresponding increase in the proportion of fast food restaurants
+
+# Median Income
 ```{r, warning = FALSE, message = FALSE}
 med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
   geom_point() +
@@ -152,7 +150,9 @@ med_in_ff = ggplot(total_rest_acs, aes(x = med_income, y = prop_fast)) +
 
 med_in_ff
 ```
-## Interpretation: as median income increases fast food prop SLIGHTLY decreases
+
+Linear regression model plot that illustrates the sociodemographic covariate median household income per ZCTA (x) against the proportion of fast food restaurants (y). There is a non-significant marginal inverse relationship as we move across the x distribution where median household income per ZCTA  increases within a zip code there is a corresponding decrease in the proportion of fast food restaurants.
+
 
 The hypothesis of these models was to see how the identified sociodemographic variables would impact the presence of a restaurant type throughout zip codes in NYC. To perform these analyses we had to further modify the restaurant location dataframe and create proportions of restaurant type for each zip code. We also mutated a factored binary variable for restaurant type by zip code with 1 representing the restaurant type is present and 0 representing the restaurant type was absent. This manipulated restaurant type dataframe was joined with the ACS dataframe by zip code to create a total dataframe with all variables needed for analysis. 
 
